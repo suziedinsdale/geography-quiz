@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>AS Physical Geography Quiz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: one narrow column, phone first. Home is a menu of three ways in; the quiz shows one question per screen.
+   Each case study keeps the marker colour of its poster title, laid down like a highlighter stroke. */
+:root{
+  --paper:#F4F6FA; --card:#FFFFFF; --ink:#141824; --ink-2:#565D70; --line:#D9DDE7;
+  --hl:#FFE95E;
+  --good:#17703C; --good-bg:#D3F4D7; --bad:#B3243D; --bad-bg:#FFDCE2;
+  --hyd:#1D6BC0; --atm:#7A3DA8; --rok:#A8501E;
+  --display:"Bricolage Grotesque","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  --t:var(--ink);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12141B; --card:#1C1F2A; --ink:#EEF0F6; --ink-2:#A3A9BB; --line:#313545;
+    --hl:#7A6C00;
+    --good:#6FDB98; --good-bg:#173A26; --bad:#FF8A9B; --bad-bg:#47202A;
+    --hyd:#6DB2FF; --atm:#C797F2; --rok:#E9A06C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12141B; --card:#1C1F2A; --ink:#EEF0F6; --ink-2:#A3A9BB; --line:#313545;
+  --hl:#7A6C00;
+  --good:#6FDB98; --good-bg:#173A26; --bad:#FF8A9B; --bad-bg:#47202A;
+  --hyd:#6DB2FF; --atm:#C797F2; --rok:#E9A06C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:20px 40px}
+#app{max-width:620px;margin-inline:auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3,p{margin:0}
+h1{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.15rem;text-wrap:balance}
+.mark{background:linear-gradient(transparent 52%,var(--hl) 52%,var(--hl) 92%,transparent 92%);padding-inline:.12em}
+.sub{color:var(--ink-2)}
+.block{display:flex;flex-direction:column;gap:10px}
+.block > .sub{font-size:.95rem}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ken);outline-offset:2px}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--paper);font-weight:700;padding:14px 18px;border-radius:12px;text-align:center;width:100%}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > .btn{flex:1 1 180px}
+.link{background:none;border:0;padding:6px 0;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+.resume{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+
+.topics{display:flex;flex-direction:column;gap:8px}
+.topic{display:grid;grid-template-columns:26px 1fr auto;column-gap:12px;row-gap:8px;align-items:center;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
+.topic[aria-pressed="true"]{border-color:var(--t)}
+.swatch{width:26px;height:26px;border-radius:7px;border:2px solid var(--t);display:grid;place-items:center;color:var(--card);font-weight:700;font-size:16px;line-height:1}
+.topic[aria-pressed="true"] .swatch{background:var(--t)}
+.tname{font-weight:700;min-width:0}
+.tmeta{display:block;font-weight:400;font-size:.85rem;color:var(--ink-2)}
+.tpct{font-variant-numeric:tabular-nums;font-weight:700;color:var(--t)}
+.meter{grid-column:1 / -1;height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.meter > span{display:block;height:100%;background:var(--t);border-radius:4px}
+
+.ghead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:10px}
+.ghead h3{font-family:var(--display);font-weight:600;font-size:1rem;background:color-mix(in srgb,var(--t) 24%,transparent);padding:2px 8px;border-radius:3px}
+.ghead .link{font-size:.9rem;white-space:nowrap}
+.foot{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:14px;font-size:.95rem}
+.switch{display:flex;align-items:center;gap:10px;background:none;border:0;padding:6px 0;text-align:left}
+.switch i{width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;flex:none}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--card)}
+.switch[aria-pressed="true"] i{background:var(--ink)}
+.switch[aria-pressed="true"] i::after{left:19px}
+
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.count{font-variant-numeric:tabular-nums;font-weight:700}
+.track{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.track > div{height:100%;background:var(--ink)}
+.qcard{display:flex;flex-direction:column;gap:16px}
+.tag{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.tag .hl{background:color-mix(in srgb,var(--t) 24%,transparent);padding:3px 8px;border-radius:3px}
+.tag .sec{color:var(--ink-2)}
+.q{font-family:var(--display);font-weight:600;font-size:1.5rem;line-height:1.2;text-wrap:balance}
+.opts,.points{display:flex;flex-direction:column;gap:8px;list-style:none;padding:0;margin:0}
+.opt{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:center;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
+.opt b{width:28px;height:28px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;font-size:.85rem;color:var(--ink-2)}
+.opt span{min-width:0}
+.opt.right{background:var(--good-bg);border-color:var(--good)}
+.opt.right b{border-color:var(--good);color:var(--good)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.opt.wrong b{border-color:var(--bad);color:var(--bad)}
+.opt.dim{opacity:.55}
+.opt[disabled]{cursor:default}
+.opt.on{background:var(--good-bg);border-color:var(--good)}
+.opt.on b{background:var(--good);border-color:var(--good);color:var(--card)}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--good)}
+.verdict.no{color:var(--bad)}
+.note{background:var(--card);border-left:5px solid var(--hl);padding:10px 12px;font-size:.95rem}
+.answer{background:var(--card);border:2px solid var(--t);border-radius:12px;padding:14px;font-weight:700}
+.hint{color:var(--ink-2);font-size:.95rem}
+
+.score{font-family:var(--display);font-weight:800;font-size:3.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.split{display:flex;flex-direction:column;gap:6px;list-style:none;padding:0;margin:0}
+.split li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-block:6px}
+.split b{font-variant-numeric:tabular-nums;color:var(--t)}
+.missed{display:flex;flex-direction:column;gap:10px;list-style:none;padding:0;margin:0}
+.missed li{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--t);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.missed .mq{font-weight:700}
+.missed .ma{color:var(--ink-2);font-size:.95rem}
+@media (prefers-reduced-motion:no-preference){
+  .track > div,.meter > span{transition:width .25s ease}
+}
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<script>
+(function(){
+"use strict";
+
+var GROUPS=[
+  {id:"hyd",name:"1 Hydrology and fluvial geomorphology"},
+  {id:"atm",name:"2 Atmosphere and weather"},
+  {id:"rok",name:"3 Rocks and weathering"}
+];
+var TOPICS=[
+  {id:"h1",g:"hyd",name:"1.1 The drainage basin system"},
+  {id:"h2",g:"hyd",name:"1.2 Discharge relationships"},
+  {id:"h3",g:"hyd",name:"1.3 River channel processes and landforms"},
+  {id:"h4",g:"hyd",name:"1.4 The human impact"},
+  {id:"ken",g:"hyd",name:"Case study: Kendal floods"},
+  {id:"tee",g:"hyd",name:"Case study: River Tees management"},
+  {id:"a1",g:"atm",name:"2.1 Diurnal energy budgets"},
+  {id:"a2",g:"atm",name:"2.2 The global energy budget"},
+  {id:"a3",g:"atm",name:"2.3 Weather processes and phenomena"},
+  {id:"a4",g:"atm",name:"2.4 The human impact"},
+  {id:"r1",g:"rok",name:"3.1 Plate tectonics"},
+  {id:"r2",g:"rok",name:"3.2 Weathering"},
+  {id:"r3",g:"rok",name:"3.3 Slope processes"},
+  {id:"r4",g:"rok",name:"3.4 The human impact"},
+  {id:"abe",g:"rok",name:"Case study: Aberfan"}
+];
+
+function m(id,sec,q,a,d,note){return {id:id,t:id.split("-")[0],sec:sec,type:"mc",q:q,a:a,d:d,note:note||""};}
+function r(id,sec,q,p,note){return {id:id,t:id.split("-")[0],sec:sec,type:"rc",q:q,p:p,note:note||""};}
+var EDGE="Rebuilt from a part-hidden poster. Check the wording against the one on the wall.";
+
+var Q=[
+/* 1.1 The drainage basin system */
+m("h1-01","System","What is a drainage basin?","The area of land drained by a river and its tributaries",["The channel that a river flows in","The land that floods when a river overflows","The point where a river meets the sea"]),
+m("h1-02","System","What is a watershed?","The boundary that divides one drainage basin from another",["The point where two rivers join","The place where a river starts","The lowest point of a drainage basin"]),
+m("h1-03","System","Why is a drainage basin described as an open system?","Water and energy enter and leave across its boundary",["Water only moves between stores inside it","It has no stores, only flows","It is not enclosed by high ground"]),
+r("h1-04","System","What is the main input to the drainage basin system?",["Precipitation"]),
+r("h1-05","Outputs","Name the three outputs of the drainage basin system.",["Evaporation","Evapotranspiration","River discharge"]),
+m("h1-06","Outputs","What is evaporation?","Liquid water changing to water vapour from a surface",["Water vapour changing to liquid water","Water lost from plant leaves","Water soaking into the soil"]),
+m("h1-07","Outputs","What is transpiration?","Water vapour lost from plants through the stomata in their leaves",["Water dripping from leaves to the ground","Water taken up by plant roots","Water evaporating from the soil surface"]),
+m("h1-08","Outputs","What is evapotranspiration?","The combined loss of water by evaporation and transpiration",["Evaporation from the sea only","Transpiration from trees only","Water lost as river discharge"]),
+r("h1-09","Outputs","What is the difference between potential and actual evapotranspiration?",["Potential: the amount that would happen if water supply were unlimited","Actual: the amount that does happen with the water available"]),
+m("h1-10","Outputs","What is river discharge?","The volume of water passing a point in a river in a given time",["The speed of the water in a river","The amount of sediment a river carries","The depth of water in a river"]),
+r("h1-11","Stores","Name the five stores in a drainage basin.",["Interception","Soil water","Surface water","Groundwater","Channel storage"]),
+m("h1-12","Stores","What is interception?","Precipitation caught and held by vegetation before it reaches the ground",["Water soaking into the soil","Water held in lakes and puddles","Water flowing over the ground surface"]),
+r("h1-13","Stores","What affects how much water is intercepted?",["Vegetation type and density (forest intercepts more than grass)","Season (deciduous trees intercept less in winter)","Rainfall intensity and duration (the store fills in long or heavy rain)"]),
+r("h1-14","Stores","What is surface water storage? Give examples.",["Water held on the ground surface","For example puddles, ponds and lakes"]),
+m("h1-15","Stores","What is soil water?","Water held in the pore spaces of the soil",["Water flowing over the soil surface","Water stored in saturated rock","Water held on leaves"]),
+m("h1-16","Stores","What is channel storage?","Water held in the river channel itself",["Water held in rock below the water table","Water held in the soil","Water held behind a dam only"]),
+r("h1-17","Flows","Name the four above-ground flows.",["Throughfall","Stemflow","Overland flow","Channel flow"]),
+r("h1-18","Flows","Name the five below-ground flows.",["Infiltration","Percolation","Throughflow","Groundwater flow","Baseflow"]),
+m("h1-19","Flows","What is throughfall?","Water dripping from leaves and branches to the ground",["Water running down stems and trunks","Water moving sideways through the soil","Water soaking into the soil"]),
+m("h1-20","Flows","What is stemflow?","Water running down stems and trunks to the ground",["Water dripping from leaves to the ground","Water moving up through a plant","Water flowing in a small stream"]),
+m("h1-21","Flows","What is overland flow?","Water flowing over the ground surface",["Water moving sideways through the soil","Water flowing in the river channel","Water moving through rock"]),
+r("h1-22","Flows","Give the two situations in which overland flow happens.",["Rain falls faster than the soil can absorb it (infiltration capacity is exceeded)","The soil is already saturated, so no more water can infiltrate"]),
+m("h1-23","Flows","What is infiltration?","Water soaking from the surface into the soil",["Water moving from soil into rock","Water moving sideways through the soil","Water flowing over the surface"]),
+m("h1-24","Flows","What is infiltration capacity?","The maximum rate at which a soil can absorb water",["The total amount of water a soil can hold","The depth of the water table","The rate at which water moves through rock"]),
+m("h1-25","Flows","What is percolation?","Water moving downwards from the soil into the rock below",["Water soaking from the surface into the soil","Water moving sideways through the soil","Water flowing out at a spring"]),
+m("h1-26","Flows","What is throughflow?","Water moving sideways, downslope, through the soil",["Water dripping through the leaf canopy","Water moving through saturated rock","Water flowing over the surface"]),
+m("h1-27","Flows","What is groundwater flow?","The slow movement of water through saturated rock",["Fast flow of water over saturated ground","Water moving sideways through the soil","Water soaking into the soil"]),
+m("h1-28","Flows","What is baseflow?","The part of a river's discharge supplied by groundwater",["The discharge at the peak of a flood","Water reaching the river as overland flow","Water flowing along the river bed only"]),
+m("h1-29","Flows","Which flow usually reaches the river fastest?","Overland flow",["Throughflow","Groundwater flow","Percolation"]),
+m("h1-30","Flows","Which flow is the slowest route to the river?","Groundwater flow",["Overland flow","Throughflow","Stemflow"]),
+m("h1-40","Flows","What is channel flow?","Water flowing in the river channel",["Water flowing over the ground surface","Water moving sideways through the soil","Water held in lakes and ponds"]),
+m("h1-31","Flows","Percolation is which kind of component?","A below-ground flow",["An above-ground flow","A store","An output"]),
+m("h1-32","Stores","Interception is which kind of component?","A store",["A below-ground flow","An above-ground flow","An output"]),
+m("h1-33","Underground water","What is the water table?","The upper surface of the saturated zone",["The bottom of the soil layer","The level of water in a river","The base of an aquifer"]),
+m("h1-34","Underground water","What is groundwater?","Water stored in the pores and cracks of saturated rock below the water table",["Water held in the soil above the water table","Water lying on the ground surface","Water in the river channel"]),
+m("h1-35","Underground water","What is recharge?","The refilling of groundwater by water percolating down",["Water leaving an aquifer at a spring","Water pumped out of an aquifer","Water evaporating from the soil"]),
+m("h1-36","Underground water","What is an aquifer?","A permeable rock that stores and transmits groundwater",["An impermeable rock that blocks water","A lake fed by a spring","A river channel cut into rock"]),
+r("h1-37","Underground water","What is a spring, and where does one form?",["A place where groundwater flows out at the surface","Where the water table meets the surface, often where permeable rock lies over impermeable rock"]),
+r("h1-38","Underground water","Name the two zones either side of the water table.",["Phreatic zone: permanently saturated rock below the water table","Vadose (aeration) zone: unsaturated rock and soil above it"]),
+r("h1-39","Underground water","How does the water table change through the year?",["It rises in wet periods, when recharge is greater than losses","It falls in dry periods"]),
+
+/* 1.2 Discharge relationships within drainage basins */
+m("h2-01","Hydrographs","What does a storm hydrograph show?","How a river's discharge responds to a single rainfall event",["How discharge varies over a whole year","How fast a river flows at different depths","How much sediment a river carries"]),
+m("h2-02","Hydrographs","What does an annual hydrograph (river regime) show?","How a river's discharge varies over a year",["How discharge responds to one storm","The highest flood in each year","Rainfall for each month"]),
+m("h2-03","Hydrographs","In what unit is discharge measured?","Cumecs (cubic metres per second)",["Metres per second","Cubic metres","Millimetres per hour"]),
+m("h2-04","Hydrographs","How is discharge calculated?","Cross-sectional area multiplied by velocity",["Width multiplied by depth","Velocity divided by cross-sectional area","Wetted perimeter multiplied by depth"]),
+r("h2-05","Hydrographs","Name the components of a storm hydrograph.",["Rising limb","Peak discharge","Lag time","Falling (recessional) limb","Baseflow","Storm flow (quickflow)"]),
+m("h2-06","Hydrographs","What is lag time?","The time between peak rainfall and peak discharge",["The time between the start of rain and the start of flooding","The time the river stays above bankfull","The time between two storms"]),
+m("h2-07","Hydrographs","What is the rising limb?","The part of the graph where discharge increases after the rain begins",["The part where discharge falls back to normal","The bars showing rainfall","The line showing baseflow"]),
+m("h2-08","Hydrographs","What is the falling (recessional) limb?","The part of the graph where discharge falls after the peak",["The part where discharge rises to the peak","The fall in rainfall after a storm","The drop in the water table"]),
+m("h2-09","Hydrographs","What is peak discharge?","The highest discharge reached after the rainfall event",["The discharge before the rain started","The highest rainfall in one hour","The discharge when the river first floods"]),
+m("h2-10","Hydrographs","What is storm flow (quickflow)?","Discharge above baseflow, supplied by overland flow and throughflow",["Discharge supplied by groundwater","Discharge at bankfull","Rain falling directly into the channel only"]),
+m("h2-11","Hydrographs","What is bankfull discharge?","The discharge at which the channel is completely full, so any more causes flooding",["The lowest discharge of the year","The average discharge of the river","The discharge supplied by groundwater"]),
+r("h2-12","Hydrographs","Describe a flashy hydrograph.",["Short lag time","Steep rising and falling limbs","High peak discharge"]),
+r("h2-13","Hydrographs","What controls the shape of a river's annual regime?",["The seasonal pattern of precipitation","Temperature, through evapotranspiration and snow or ice melt","Basin characteristics such as geology and land use"]),
+r("h2-33","Hydrographs","What is the difference between a simple and a complex river regime?",["Simple: one period of high discharge and one of low discharge each year","Complex: several peaks, because the river crosses different climate or relief regions or has many tributaries"]),
+r("h2-14","Climate","Name the six climate influences on hydrographs listed in the syllabus.",["Precipitation type and intensity","Temperature","Evaporation","Transpiration","Evapotranspiration","Antecedent moisture"]),
+r("h2-15","Climate","How does precipitation intensity affect a hydrograph?",["Intense rain can exceed the infiltration capacity of the soil","This causes overland flow, so a short lag time and high peak"]),
+r("h2-16","Climate","How does precipitation type affect a hydrograph?",["Snow is stored on the surface, so lag time is long","Rapid snowmelt later releases the water and can give a high peak"]),
+r("h2-17","Climate","How does temperature affect a hydrograph?",["High temperatures increase evapotranspiration, so less water reaches the river","Frozen ground is impermeable, so overland flow increases","Rising temperatures can cause snowmelt, which increases discharge"]),
+r("h2-18","Climate","How do evaporation and transpiration affect discharge?",["They return water to the atmosphere","So less water reaches the river and peak discharge is lower"]),
+m("h2-19","Climate","What is antecedent moisture?","The amount of water already in the soil before the rain starts",["The rain that falls in the first hour of a storm","Water left in the channel after a flood","Moisture in the air before a storm"]),
+r("h2-20","Climate","How does high antecedent moisture affect a hydrograph?",["The soil is already saturated, so infiltration is low and overland flow is high","Short lag time and high peak discharge"]),
+r("h2-21","Basin","Name the drainage basin characteristics that influence hydrographs.",["Size and shape","Drainage density","Porosity and permeability of soils","Rock type","Slopes","Vegetation type","Land use"]),
+r("h2-22","Basin","How does basin size affect a hydrograph?",["Small basin: water reaches the river quickly, so a short lag time","Large basin: longer lag time, but a higher peak discharge because more water is collected"]),
+r("h2-23","Basin","How does basin shape affect a hydrograph?",["Circular basin: water from all parts arrives at about the same time, so a short lag and high peak","Elongated basin: water arrives over a longer period, so a longer lag and lower peak"]),
+m("h2-24","Basin","What is drainage density?","The total length of streams divided by the area of the basin",["The number of streams in a basin","The area of the basin divided by its length","The volume of water per square kilometre"]),
+r("h2-25","Basin","How does drainage density affect a hydrograph?",["High density: water reaches a channel quickly, so a short lag and high peak","Low density: water travels further as slower throughflow, so a longer lag and lower peak"]),
+m("h2-26","Basin","What is porosity?","The proportion of a rock or soil made up of pore spaces",["The ability of a rock to let water pass through","The number of joints in a rock","The hardness of a rock"]),
+m("h2-27","Basin","What is permeability?","The ability of a rock or soil to let water pass through it",["The amount of pore space in a rock","The amount of water a rock holds","The resistance of a rock to erosion"]),
+r("h2-28","Basin","How do soil porosity and permeability affect a hydrograph?",["Sandy soils have large pores, so high infiltration, less overland flow and a lower peak","Clay soils have tiny pores, so low infiltration, more overland flow and a flashier response"]),
+r("h2-29","Basin","How does rock type affect a hydrograph?",["Permeable rock (chalk, limestone) lets water percolate: long lag, low peak, high baseflow","Impermeable rock (granite, clay) gives more surface runoff: short lag, high peak"]),
+r("h2-30","Basin","How do slopes affect a hydrograph?",["Steep slopes: water runs off quickly with little infiltration, so a short lag and high peak","Gentle slopes: more time to infiltrate, so a longer lag and lower peak"]),
+r("h2-31","Basin","How does vegetation affect a hydrograph?",["Forest intercepts rain and takes up water, so a longer lag and lower peak","Bare ground or sparse vegetation gives more overland flow","Deciduous trees intercept less in winter"]),
+r("h2-32","Basin","How does urban land use affect a hydrograph?",["Impermeable surfaces such as tarmac and concrete stop infiltration","Drains and sewers carry water quickly to the river","So a short lag time and high peak discharge"]),
+r("h2-34","Basin","How does agricultural land use affect a hydrograph?",["Bare, ploughed or compacted soil gives more overland flow, especially when ploughed up and down the slope","Field drains carry water quickly to the river, so lag time is shorter","Crops intercept rain, but less than forest"]),
+
+/* 1.3 River channel processes and landforms */
+r("h3-01","Erosion","Name the four erosion processes in the syllabus.",["Abrasion (corrasion)","Solution","Cavitation","Hydraulic action"]),
+m("h3-02","Erosion","What is abrasion (corrasion)?","The load the river carries wears away the bed and banks",["The force of water alone breaks up the banks","Rock is dissolved by the water","Air bubbles collapse against the bank"]),
+m("h3-03","Erosion","What is hydraulic action?","The sheer force of moving water dislodges material and compresses air in cracks",["The river's load scrapes the bed","Rock dissolves in slightly acidic water","Particles of load hit each other and get smaller"]),
+m("h3-04","Erosion","What is solution, as an erosion process?","Soluble rock such as limestone is dissolved by the water",["Fine material is carried within the flow","Air bubbles implode against the bank","Pebbles are rolled along the bed"]),
+m("h3-05","Erosion","What is cavitation?","Air bubbles in turbulent water collapse, sending shock waves that weaken the banks",["Water dissolves the rock","Pebbles drill holes in the bed","Banks collapse because they are saturated"]),
+r("h3-06","Erosion","What is the difference between vertical and lateral erosion?",["Vertical erosion cuts downwards and deepens the channel, mostly in the upper course","Lateral erosion cuts sideways and widens the channel and valley, mostly in the middle and lower course"]),
+r("h3-07","Transport","Name the four ways a river transports its load.",["Traction","Saltation","Suspension","Solution"]),
+m("h3-08","Transport","What is traction?","Large stones and boulders are rolled or dragged along the bed",["Small stones bounce along the bed","Fine particles are carried in the flow","Minerals are carried dissolved in the water"]),
+m("h3-09","Transport","What is saltation?","Sand and small stones bounce along the bed",["Boulders roll along the bed","Silt and clay are carried in the flow","Dissolved minerals are carried in the water"]),
+m("h3-10","Transport","What is suspension?","Fine silt and clay are carried within the body of the water",["Sand grains bounce along the bed","Boulders are rolled along the bed","Minerals are dissolved in the water"]),
+m("h3-11","Transport","What is solution, as a transport process?","Dissolved minerals are carried invisibly in the water",["Fine particles are held up by turbulence","Pebbles bounce along the bed","Material is dropped on the bed"]),
+r("h3-12","Transport","Define a river's competence and capacity.",["Competence: the largest size of particle the river can carry","Capacity: the total amount of load the river can carry"]),
+r("h3-13","Deposition","Give three situations in which a river deposits its load.",["Velocity falls, for example on the inside of a bend or in shallow water","Discharge falls after a flood or in a dry period","The river enters a lake or the sea"]),
+m("h3-14","Deposition","When velocity falls, which part of the load is deposited first?","The largest, heaviest particles",["The finest clay","The dissolved load","All sizes at the same time"]),
+m("h3-15","Hjulström curve","What does the Hjulström curve show?","The relationship between river velocity and the particle sizes that are eroded, transported and deposited",["How discharge changes during a storm","How velocity changes downstream","How weathering varies with climate"]),
+r("h3-16","Hjulström curve","Name the two curves on the Hjulström diagram.",["Critical erosion velocity: the lowest velocity needed to pick up a particle of a given size","Settling (fall) velocity: the velocity below which a particle of a given size is deposited"]),
+m("h3-17","Hjulström curve","Which particle size needs the lowest velocity to be eroded?","Sand",["Clay","Gravel","Boulders"]),
+r("h3-18","Hjulström curve","Why does clay need a higher velocity to be eroded than sand?",["Clay particles are cohesive and stick together","They also form a smooth bed that resists being picked up"]),
+r("h3-19","Hjulström curve","What happens to clay once it has been picked up?",["It stays in suspension even at very low velocities","So it is carried a long way before being deposited"]),
+m("h3-20","Hjulström curve","Is more velocity needed to pick a particle up or to keep it moving?","To pick it up",["To keep it moving","The same for both","It depends only on discharge"]),
+r("h3-21","River flow","Name three factors that control a river's velocity.",["Channel gradient","Channel shape (hydraulic radius)","Channel roughness"]),
+m("h3-22","River flow","What is hydraulic radius?","Cross-sectional area divided by wetted perimeter",["Channel width divided by depth","Wetted perimeter divided by velocity","Depth multiplied by width"]),
+r("h3-23","River flow","What does a high hydraulic radius mean?",["The channel is efficient: less water is in contact with the bed and banks","So less energy is lost to friction and velocity is higher"]),
+r("h3-24","River flow","Name the three patterns of flow.",["Laminar","Turbulent","Helicoidal"]),
+r("h3-25","River flow","Describe laminar flow.",["Water moves in smooth, parallel layers with no mixing","It is rare in rivers and needs a smooth, straight channel and low velocity"]),
+r("h3-26","River flow","Describe turbulent flow.",["Water moves in eddies and swirls, with mixing in all directions","It is caused by friction with a rough bed and banks and by higher velocities"]),
+r("h3-27","River flow","Describe helicoidal flow.",["A corkscrew motion of water around a meander bend","It moves material from the outside of one bend to the inside of the next"]),
+m("h3-28","River flow","What is the thalweg?","The line of fastest flow, which follows the deepest part of the channel",["The highest point of a riffle","The outer edge of the floodplain","The point where a river overtops its banks"]),
+r("h3-29","River flow","Where is the thalweg found in a meander?",["It swings to the outside of each bend","It crosses the channel between bends"]),
+r("h3-30","Channel types","Name the three channel types.",["Straight","Braided","Meandering"]),
+r("h3-31","Channel types","Describe a braided channel.",["The river splits into several channels","They are separated by bars or islands of deposited sediment"]),
+r("h3-32","Channel types","What conditions cause braiding?",["A large load of coarse sediment","Very variable discharge, for example from snow or ice melt","Banks that are easily eroded","A fairly steep gradient"]),
+r("h3-33","Channel types","Describe straight and meandering channels.",["Straight channels are rare, and the thalweg still winds from side to side within them","Meandering channels have a winding course, with a sinuosity above 1.5"]),
+r("h3-34","Landforms","Name the landforms listed in the syllabus.",["Meanders, with river cliffs, point bars and oxbow lakes","Riffle and pool sequences","Waterfalls and gorges","Bluffs","Floodplains","Levées","Deltas"]),
+r("h3-35","Landforms","What are riffles and pools?",["Riffles: shallow sections of coarse material","Pools: deeper sections between them, which become the outside of bends","They are spaced about five to seven channel widths apart"]),
+r("h3-47","Landforms","Explain how a meander develops.",["Riffles and pools develop in a straight channel","Flow swings from side to side around the riffles","Erosion on the outside of each bend and deposition on the inside increase the sinuosity","Helicoidal flow maintains the bend"]),
+r("h3-36","Landforms","Explain how a river cliff forms.",["The fastest flow is on the outside of a meander bend","Hydraulic action and abrasion undercut the bank","The bank collapses, leaving a steep river cliff"]),
+r("h3-37","Landforms","Explain how a point bar forms.",["Flow is slow and shallow on the inside of a meander bend","The river loses energy and deposits sand and gravel","This builds a gently sloping point bar (slip-off slope)"]),
+r("h3-38","Landforms","Explain how an oxbow lake forms.",["Erosion on the outside of two bends narrows the neck of the meander","During a flood the river cuts through the neck and takes the shorter route","Deposition seals off the old loop, leaving an oxbow lake"]),
+r("h3-39","Landforms","Explain how a waterfall forms.",["A band of hard rock lies over softer rock","The softer rock is eroded faster and is undercut","A plunge pool forms at the base by hydraulic action and abrasion","The unsupported hard rock collapses and the waterfall retreats upstream"]),
+m("h3-40","Landforms","How does a gorge form?","A waterfall retreats upstream, leaving a steep-sided valley",["A meander is cut off during a flood","A river deposits material at its mouth","A river floods and deposits silt"]),
+m("h3-41","Landforms","What is a bluff?","The steep slope at the outer edge of a floodplain",["A raised bank beside the channel","A bar of sediment in a braided river","A ridge of sediment on the inside of a meander"]),
+r("h3-42","Landforms","How do bluffs form?",["Meanders migrate sideways and downstream","Lateral erosion cuts back the valley sides, leaving a line of steep slopes"]),
+r("h3-43","Landforms","Explain how a floodplain forms.",["Meanders migrate, and lateral erosion widens the valley floor","When the river floods it spreads out, slows and deposits silt (alluvium)","Repeated floods build up the flat floodplain"]),
+r("h3-44","Landforms","Explain how levées form.",["When a river floods, velocity drops sharply as water leaves the channel","The coarsest material is deposited first, next to the channel","Repeated floods build raised banks along the river"]),
+r("h3-45","Landforms","Explain how a delta forms.",["A river carrying a large load enters the sea or a lake and slows down","Sediment is deposited faster than waves and tides can remove it","Salt water makes clay particles clump together and sink (flocculation)","The river splits into distributaries as deposits block the channel"]),
+r("h3-46","Landforms","Name three types of delta, with an example of each.",["Arcuate (fan shaped), for example the Nile","Bird's foot, for example the Mississippi","Cuspate (tooth shaped), for example the Tiber"]),
+
+/* 1.4 The human impact */
+r("h4-01","Catchment changes","Name the five human modifications to catchment flows and stores in the syllabus.",["Deforestation","Afforestation","Urbanisation","Abstraction","Water storage"]),
+r("h4-02","Catchment changes","How does deforestation change flows and stores?",["Less interception and less evapotranspiration","More overland flow, so a shorter lag time and higher peak discharge","More soil erosion, so more sediment in the river"]),
+r("h4-03","Catchment changes","How does afforestation change flows and stores?",["More interception and more evapotranspiration","More infiltration, as roots open up the soil","Less overland flow, so a longer lag time and lower peak discharge"]),
+r("h4-04","Catchment changes","How does urbanisation change flows and stores?",["Impermeable surfaces reduce infiltration and increase overland flow","Drains and sewers speed water to the river","Shorter lag time and higher peak discharge","Less recharge, so lower groundwater and baseflow"]),
+m("h4-05","Catchment changes","What is abstraction?","Taking water from rivers or groundwater for human use",["Storing water behind a dam","Returning used water to a river","Diverting a river around a town"]),
+r("h4-06","Catchment changes","What are the effects of abstraction?",["Lower river discharge","A falling water table when groundwater is over-pumped","Springs and streams can dry up","Near the coast, salt water can be drawn into aquifers"]),
+r("h4-07","Catchment changes","How does water storage in dams and reservoirs change the system?",["Flow downstream is regulated, so flood peaks are lower and low flows are higher","More evaporation from the reservoir surface","Sediment is trapped behind the dam","Clear water released below the dam erodes the channel"]),
+r("h4-34","Catchment changes","How do people modify channel flows directly?",["Dams and reservoirs regulate discharge","Abstraction lowers discharge","Straightening, dredging and lining channels speeds up the flow"]),
+r("h4-08","Floods","Give the physical causes of river floods.",["Prolonged heavy rainfall that saturates the ground","Intense rainfall that exceeds infiltration capacity (flash floods)","Rapid snowmelt","Frozen or already saturated ground"]),
+r("h4-09","Floods","Give the human causes of river floods.",["Urbanisation","Deforestation","Building on floodplains","Dam or levée failure"]),
+r("h4-10","Floods","Give the negative impacts of river floods.",["Deaths and injuries","Damage to homes, businesses and infrastructure","Crops and livestock lost","Water-borne disease and polluted water supplies"]),
+r("h4-33","Floods","Give the impacts of river floods on the environment.",["Water is polluted by sewage, chemicals and debris","River banks are eroded and soil is washed away","Habitats are damaged and wildlife is killed or displaced"]),
+r("h4-11","Floods","Give two benefits of river floods.",["Fertile silt is deposited on the floodplain","Groundwater and wetlands are recharged"]),
+m("h4-12","Flood prediction","What is a recurrence interval?","The average time between floods of a given size or larger",["The time between peak rainfall and peak discharge","The length of time that a single flood lasts","The number of floods a river has in one year"]),
+m("h4-13","Flood prediction","How is recurrence interval calculated?","(Years of record + 1) divided by the rank of the flood, where rank 1 is the largest",["The rank of the flood divided by the number of years of record","Peak discharge divided by lag time, where lag time is in hours","The number of floods multiplied by the number of years of record"]),
+m("h4-14","Flood prediction","What is the chance of a 100-year flood in any one year?","1 per cent",["10 per cent","0.1 per cent","100 per cent"]),
+r("h4-15","Flood prediction","How is flood risk predicted?",["Records of past floods are used to work out recurrence intervals","Rainfall and river levels are monitored","Flood risk maps show the areas likely to be flooded"]),
+r("h4-16","Flood prediction","Why are recurrence intervals of limited use?",["They are averages, so a large flood can happen in any year","Records are often short","Land use and climate change, so past records may not reflect the present risk"]),
+r("h4-17","Flood management","Name the three approaches to preventing and reducing floods in the syllabus.",["Forecasts and warnings","Hard engineering","Soft engineering"]),
+r("h4-18","Flood management","How do forecasts and warnings reduce the impact of floods?",["People have time to evacuate and move possessions","Emergency services and temporary defences can be put in place","They do not stop the flood, and they depend on people receiving and acting on them"]),
+r("h4-19","Flood management","Name the four hard engineering methods in the syllabus.",["Dams","Straightening","Levées","Diversion spillways"]),
+r("h4-20","Flood management","How do dams reduce flooding, and what are the drawbacks?",["They store flood water in a reservoir and release it slowly","They are very expensive and flood land upstream","They trap sediment, which increases erosion downstream"]),
+r("h4-21","Flood management","How does straightening reduce flooding, and what is the drawback?",["Meanders are removed, so water moves through faster","Flood risk and erosion increase downstream"]),
+r("h4-22","Flood management","How do levées reduce flooding, and what is the drawback?",["Raised banks increase the capacity of the channel","If they are breached or overtopped, flooding is sudden and severe"]),
+m("h4-23","Flood management","What is a diversion spillway?","A channel that carries excess flood water around a settlement",["A wall built along the river bank","A reservoir that stores flood water","A section of river that has been straightened"]),
+r("h4-24","Flood management","Name the soft engineering methods in the syllabus.",["Floodplain management","Drainage basin management","Wetland conservation","River bank conservation","River restoration"]),
+r("h4-25","Flood management","What is floodplain management?",["Land-use zoning limits building in high risk areas","Low value uses such as playing fields and pasture are kept next to the river"]),
+r("h4-26","Flood management","What is drainage basin management?",["Managing land across the whole basin to slow the movement of water","For example planting trees upstream"]),
+r("h4-27","Flood management","How do wetland and river bank conservation reduce flooding?",["Wetlands store flood water and release it slowly","Bank vegetation slows the flow and holds the banks together"]),
+m("h4-28","Flood management","What is river restoration?","Returning a river to its natural course so it can flood its floodplain naturally",["Dredging a river to make it deeper","Lining a channel with concrete","Building a barrier across a river"]),
+r("h4-29","Flood management","Compare hard and soft engineering.",["Hard engineering is effective and gives quick protection, but is expensive and can move the problem downstream","Soft engineering is cheaper and more sustainable, but gives less protection in extreme floods and takes time to work"]),
+m("h4-30","Flood management","Wetland conservation is which type of flood management?","Soft engineering",["Hard engineering","Forecasting and warning","Both hard and soft engineering"]),
+m("h4-31","Flood management","A diversion spillway is which type of flood management?","Hard engineering",["Soft engineering","Forecasting and warning","Both hard and soft engineering"]),
+r("h4-32","Case study","What must the river flood case study show?",["The causes of the flood","The impacts on both people and the environment","An evaluation of attempts to reduce the impact"]),
+
+/* Case study: Kendal floods */
+m("ken-01","Key facts","Which storm caused the Kendal floods?","Storm Desmond",["Storm Arwen","Storm Ciara","Storm Eva"]),
+m("ken-02","Key facts","Which county is Kendal in?","Cumbria",["Lancashire","North Yorkshire","Northumberland"]),
+m("ken-03","Key facts","Which river flooded?","River Kent",["River Eden","River Derwent","River Lune"]),
+m("ken-04","Key facts","When did it happen?","5 to 6 December 2015",["5 to 6 December 2013","5 to 6 November 2015","25 to 26 December 2015"]),
+m("ken-05","Key facts","How much rain fell?","341mm in 24 hours",["141mm in 24 hours","241mm in 24 hours","341mm in a week"]),
+m("ken-06","Key facts","What was significant about that rainfall total?","It was a record at the time",["It was average for December","It was half the previous record","It fell over a whole month"]),
+m("ken-07","Physical causes","Were physical or human factors the main cause?","Physical",["Human","Both equally"]),
+r("ken-08","Physical causes","Name the four physical causes.",["Extreme rainfall","Relief (steep slopes)","Geology (impermeable rock)","Saturated ground"]),
+r("ken-09","Physical causes","Explain how the extreme rainfall caused flooding.",["A low pressure system brought prolonged, intense rainfall","Rapid increase in discharge"]),
+r("ken-10","Physical causes","Explain how relief made the flooding worse.",["The Lake District is a steep upland landscape","Water flows quickly down the slopes"]),
+m("ken-11","Physical causes","What type of rock is the area made of?","Slate",["Limestone","Chalk","Sandstone"]),
+r("ken-12","Physical causes","Explain how the geology made the flooding worse.",["Slate is impermeable, so water can’t infiltrate","Even more runoff"]),
+r("ken-13","Physical causes","Explain the role of saturated ground.",["Previous rain meant the soil was already full","No further saturation could occur"]),
+r("ken-14","Physical causes","What did the physical factors do to lag time and peak discharge?",["Short lag time","Very high peak discharge"]),
+r("ken-15","Human causes","Name the three human causes.",["Urbanisation","Building on floodplains","Drainage systems overwhelmed"]),
+r("ken-16","Human causes","Explain how urbanisation made the flooding worse.",["Roads and buildings mean more impermeable surfaces","More surface runoff"]),
+r("ken-17","Human causes","Why does building on floodplains matter?",["More people and property are exposed"]),
+m("ken-18","Impacts","How many homes were flooded?","More than 2,000",["More than 200","More than 500","More than 20,000"]),
+m("ken-19","Impacts","How many people lost power?","About 6,000 or more",["About 600 or more","About 16,000 or more","About 60,000 or more"]),
+r("ken-20","Impacts","Name the three social impacts.",["2,000+ homes flooded","About 6,000+ people lost power","Evacuations"]),
+m("ken-21","Impacts","How much damage was caused?","More than £500 million",["More than £5 million","More than £50 million","More than £5 billion"]),
+r("ken-22","Impacts","Name the economic impacts.",["£500 million+ damage","Businesses and factories closed","Loss of income and jobs"]),
+r("ken-23","Impacts","Name the environmental impacts.",["Water pollution (sewage and debris)","Farmland damaged (saturated)"]),
+r("ken-24","Responses","Name the three immediate responses.",["Rescue by the emergency services and army","Temporary shelters","Sandbags"]),
+r("ken-25","Responses","Give the long-term hard engineering responses.",["Flood walls","Embankments","River management"]),
+r("ken-26","Responses","Give the long-term soft engineering responses.",["Better warning systems","Land-use planning","Afforestation upstream"]),
+m("ken-27","Responses","‘Afforestation upstream’ is which kind of response?","Long-term, soft engineering",["Long-term, hard engineering","Immediate, soft engineering","Immediate, hard engineering"]),
+r("ken-28","Conclusion","Give the overall conclusion in three parts.",["Mainly caused by extreme physical factors","Human activity significantly increased the impacts","Future risk may rise due to climate change"]),
+
+/* Case study: River Tees management */
+m("tee-01","Key facts","Where is the River Tees?","North East England",["North West England","South Wales","East Anglia"]),
+m("tee-02","Key facts","Where is its source?","The Pennines",["The Lake District","The Cheviots","The North York Moors"]),
+m("tee-03","Key facts","Where is its mouth?","The North Sea",["The Irish Sea","The English Channel","The Humber"]),
+r("tee-04","Key facts","What kinds of area does it flow through?",["Rural areas, then industrial areas","For example Stockton"]),
+r("tee-05","Why manage it","Give the two reasons management is needed.",["Flood risk","Erosion risk"]),
+r("tee-06","Why manage it","Explain the flood risk.",["Heavy rainfall increases river discharge","Urban areas downstream are at risk"]),
+r("tee-07","Why manage it","Explain the erosion risk.",["Meanders and lateral erosion","In the middle and lower course of the river"]),
+m("tee-08","Why manage it","Complete it: different parts of the river need…","Different management strategies",["The same management strategy","Only hard engineering","Only soft engineering"]),
+r("tee-09","Hard engineering","Name the three hard engineering strategies.",["Tees Barrage","Channel straightening","Embankments"]),
+m("tee-10","Hard engineering","Where is the Tees Barrage?","Stockton",["Middlesbrough","Darlington","Yarm"]),
+r("tee-11","Hard engineering","What is the Tees Barrage and what does it do?",["A barrier built across the river","Reduces water levels, which reduces flooding"]),
+r("tee-12","Hard engineering","How does channel straightening work?",["Removes meanders","Increases velocity, so water moves away faster"]),
+r("tee-13","Hard engineering","What are embankments and what do they do?",["Raised river banks","Increase channel capacity"]),
+m("tee-18","Hard engineering","Channel straightening is…","Hard engineering",["Soft engineering"]),
+r("tee-14","Soft engineering","Name the three soft engineering strategies.",["Afforestation","Flood zoning","River restoration"]),
+r("tee-15","Soft engineering","How does afforestation reduce flooding?",["Planting trees","More interception, which reduces runoff","Plant uptake of water"]),
+r("tee-16","Soft engineering","What does flood zoning do?",["Limits building in high risk areas","Reduces damage"]),
+r("tee-17","Soft engineering","What is river restoration?",["Allows the river to go back to its natural course"]),
+m("tee-19","Soft engineering","Flood zoning is…","Soft engineering",["Hard engineering"]),
+r("tee-20","Impacts of management","Name the three benefits of flood management.",["Reduced flood risk","Protects settlements and industry","Economic benefits"]),
+r("tee-21","Impacts of management","Name the three costs or problems.",["Expensive","Can cause more flooding downstream","Environmental damage"]),
+r("tee-22","Conclusion","Give the overall judgement on hard engineering.",["Effective","But expensive","Can cause knock-on effects"]),
+
+/* 2.1 Diurnal energy budgets */
+m("a1-01","Basics","What is a diurnal energy budget?","The balance of energy gained and lost at the Earth's surface over a 24-hour day",["The balance of energy over a whole year","The difference in energy between the equator and the poles","The amount of heat stored in the oceans"]),
+r("a1-02","Daytime","Name the six components of the daytime energy budget.",["Incoming (shortwave) solar radiation","Reflected solar radiation","Energy absorbed into the surface and subsurface","Sensible heat transfer","Longwave radiation","Latent heat transfer (evaporation)"]),
+r("a1-03","Night-time","Name the four components of the night-time energy budget.",["Longwave radiation lost from the surface","Latent heat transfer (condensation, forming dew)","Sensible heat transfer","Absorbed energy returned to Earth (sub-surface supply)"]),
+m("a1-04","Daytime","What type of radiation is incoming solar radiation?","Shortwave",["Longwave","Infrared only","Microwave"]),
+m("a1-05","Daytime","What is insolation?","Incoming solar radiation",["Heat stored in the soil","Radiation given off by the Earth","Heat trapped by clouds"]),
+m("a1-06","Daytime","What is albedo?","The proportion of solar radiation a surface reflects",["The amount of radiation a surface absorbs","The heat given off by a surface at night","The temperature of a surface"]),
+m("a1-07","Daytime","Which surface has the highest albedo?","Fresh snow",["Tarmac","Forest","Dark soil"]),
+m("a1-08","Daytime","Which surface has the lowest albedo?","Tarmac",["Fresh snow","Sand","Thick cloud"]),
+r("a1-24","Daytime","What is reflected solar radiation, and what controls how much is reflected?",["Solar radiation sent back by clouds and by the surface without heating it","The albedo of the cloud or surface controls how much"]),
+r("a1-09","Daytime","What happens to solar radiation that reaches the surface and is not reflected?",["It is absorbed and heats the surface","Heat is conducted down into the subsurface"]),
+m("a1-10","Both","What is sensible heat transfer?","The movement of heat to or from the surface by conduction and convection of air",["Heat used to evaporate water","Radiation given off by the ground","Radiation reflected by clouds"]),
+m("a1-11","Both","What type of radiation does the Earth's surface emit?","Longwave",["Shortwave","Ultraviolet","Visible light"]),
+m("a1-12","Both","What is latent heat?","Energy taken in or released when water changes state",["Heat that can be felt and measured with a thermometer","Radiation reflected by a surface","Heat conducted into the soil"]),
+r("a1-13","Daytime","How does latent heat transfer affect the surface during the day?",["Energy is used to evaporate water","This energy is not available to heat the surface, so the surface is cooled"]),
+r("a1-14","Night-time","How does latent heat transfer affect the surface at night?",["Water vapour condenses on the cold surface as dew","Condensation releases latent heat, which slightly warms the surface"]),
+m("a1-15","Night-time","What is dew?","Water droplets that condense onto a surface cooled below the dew point",["Rain that falls at night","Ice crystals that form on cold surfaces","Cloud at ground level"]),
+r("a1-16","Night-time","What is meant by absorbed energy returned to Earth?",["Heat absorbed into the ground by day is conducted back up to the surface at night (sub-surface supply)","This offsets some of the night-time cooling"]),
+r("a1-17","Night-time","Why does the surface cool at night?",["There is no incoming solar radiation","The surface keeps losing energy as longwave radiation"]),
+
+r("a1-19","Controls","How does cloud cover affect the diurnal energy budget?",["By day, clouds reflect solar radiation, so the surface is cooler","By night, clouds absorb and return longwave radiation, so the surface stays warmer","So cloudy conditions give a small diurnal temperature range"]),
+r("a1-20","Controls","Why do deserts have a large diurnal temperature range?",["Clear skies allow strong solar heating by day","Clear, dry air lets longwave radiation escape quickly at night","Little water means little energy is used in evaporation"]),
+m("a1-21","Controls","Which conditions give the coldest nights?","Clear skies and calm air",["Thick cloud and strong wind","Thick cloud and calm air","Clear skies and strong wind"]),
+m("a1-22","Daytime","Which of these is an energy gain for the surface during the day?","Incoming solar radiation",["Reflected solar radiation","Latent heat transfer by evaporation","Longwave radiation emitted by the surface"]),
+r("a1-23","Controls","How does the type of surface affect the daytime budget?",["Albedo controls how much solar radiation is reflected or absorbed","Wet or vegetated surfaces use more energy in evaporation, so they heat up less","Dry, dark surfaces absorb more and heat up more"]),
+
+/* 2.2 The global energy budget */
+r("a2-01","Latitude","Describe the latitudinal pattern of radiation.",["An energy surplus in low latitudes, between about 35°N and 35°S","An energy deficit in higher latitudes, towards the poles"]),
+r("a2-02","Latitude","Why do low latitudes have an energy surplus?",["The sun is high in the sky, so radiation is concentrated on a small area","Radiation passes through less atmosphere, so less is absorbed, scattered and reflected"]),
+r("a2-03","Latitude","Why do high latitudes have an energy deficit?",["The sun is at a low angle, so radiation is spread over a large area","Radiation passes through more atmosphere","Ice and snow have a high albedo and reflect much of it"]),
+r("a2-04","Latitude","Why do the tropics not keep getting hotter and the poles colder?",["Surplus heat is transferred from low to high latitudes","By winds (atmospheric circulation) and by ocean currents"]),
+m("a2-05","Transfers","Overall, which transfers more surplus heat from low to high latitudes?","Winds, about 80 per cent",["Ocean currents, about 80 per cent","They transfer equal amounts","Neither, the heat is lost to space"]),
+r("a2-06","Transfers","Name the three cells of the tri-cellular model, from the equator to the pole.",["Hadley cell","Ferrel cell","Polar cell"]),
+r("a2-07","Transfers","Describe the Hadley cell.",["Warm air rises at the equator, giving low pressure","It flows towards the poles at height, cools and sinks at about 30°, giving high pressure","Air returns to the equator at the surface as the trade winds"]),
+m("a2-08","Transfers","What is the ITCZ?","The low pressure zone near the equator where the trade winds meet and air rises",["The high pressure zone at 30° where air sinks","The boundary between polar and tropical air at 60°","A fast wind high in the atmosphere"]),
+r("a2-09","Transfers","Give the main pressure belts from the equator to the pole.",["Equatorial low at about 0°","Subtropical high at about 30°","Subpolar low at about 60°","Polar high at 90°"]),
+r("a2-10","Transfers","Name the three surface wind belts in each hemisphere.",["Trade winds, between 30° and the equator","Westerlies, between 30° and 60°","Polar easterlies, between the pole and 60°"]),
+m("a2-11","Transfers","In which direction do surface winds blow?","From high pressure to low pressure",["From low pressure to high pressure","Always from west to east","Always from the poles to the equator"]),
+r("a2-12","Transfers","What is the Coriolis force and what does it do to winds?",["A deflection caused by the Earth's rotation","Winds are deflected to the right in the northern hemisphere","Winds are deflected to the left in the southern hemisphere"]),
+m("a2-13","Transfers","Which way do the trade winds blow in the northern hemisphere?","From the north-east",["From the south-west","From the north-west","From the south-east"]),
+r("a2-14","Transfers","How do ocean currents transfer heat?",["Warm currents carry heat from low latitudes towards the poles","Cold currents carry cold water from high latitudes towards the equator"]),
+r("a2-15","Transfers","What drives ocean currents?",["Prevailing winds drive the surface currents","Differences in water density, from temperature and salinity, drive the deep circulation"]),
+r("a2-16","Transfers","Give one warm and one cold ocean current.",["Warm: the Gulf Stream, which continues as the North Atlantic Drift","Cold: the Canaries, Peru (Humboldt), Benguela or California current"]),
+m("a2-17","Transfers","What is a gyre?","A large circular system of ocean currents",["A fast wind in the upper atmosphere","A zone of rising air at the equator","A cold current on a west coast"]),
+r("a2-18","Seasons","What causes seasonal variation in temperature, pressure and wind belts?",["The Earth's axis is tilted, so the overhead sun moves between the Tropics of Cancer and Capricorn","The zone of maximum heating moves north in June and south in December"]),
+r("a2-19","Seasons","How do the pressure and wind belts change with the seasons?",["They follow the overhead sun","They shift north in the northern summer (June to August)","They shift south in the southern summer (December to February)"]),
+r("a2-20","Seasons","Name the three influences on seasonal variations in the syllabus.",["Latitude","Land and sea distribution","Ocean currents"]),
+r("a2-21","Seasons","How does latitude affect seasonal temperature variation?",["Near the equator the sun is always high, so temperatures change little through the year","Seasonal differences in the sun's angle and day length increase towards the poles, so the range is larger"]),
+r("a2-22","Seasons","Why does land heat up and cool down faster than the sea?",["Land has a lower specific heat capacity than water","Land is heated only at the surface, while the sea is transparent and mixes heat to depth"]),
+r("a2-23","Seasons","How does land and sea distribution affect temperature?",["Continental interiors have hot summers and cold winters, so a large annual range","Coastal areas have a smaller range, because the sea moderates temperatures","The northern hemisphere has more land, so its seasonal range is greater"]),
+r("a2-24","Seasons","How does land and sea distribution affect pressure?",["In summer, hot continents develop low pressure","In winter, cold continents develop high pressure, for example over Siberia"]),
+r("a2-25","Seasons","How does the seasonal pressure change over Asia affect the winds?",["Summer low pressure draws in moist winds from the ocean, bringing the wet monsoon","Winter high pressure sends dry winds outwards from the land"]),
+r("a2-26","Seasons","How do ocean currents affect the temperature of nearby land?",["Warm currents raise temperatures, for example the North Atlantic Drift keeps north-west Europe mild in winter","Cold currents lower temperatures, for example the Peru current on the west coast of South America"]),
+r("a2-27","Seasons","How do cold ocean currents affect coastal climates?",["They cool the air above, so it holds little moisture and is stable","This gives fog but very little rain, as in the Atacama and Namib deserts"]),
+m("a2-28","Seasons","On an isotherm map for January, where are the lowest northern hemisphere temperatures?","In the continental interiors, such as Siberia",["Over the North Atlantic","Along west-facing coasts","At the equator"]),
+m("a2-29","Seasons","On an isotherm map for July, where are the highest northern hemisphere temperatures?","In the continental interiors and hot deserts, such as the Sahara and central Asia",["Over the middle of the North Atlantic and North Pacific oceans","Along the west-facing coasts of Europe and North America","Over the Arctic Ocean and Greenland"]),
+r("a2-30","Seasons","How does the ITCZ move through the year?",["It follows the overhead sun","It moves north of the equator in June to August, furthest over the continents","It moves south of the equator in December to February"]),
+
+/* 2.3 Weather processes and phenomena */
+r("a3-01","Moisture processes","Name the six atmospheric moisture processes.",["Evaporation","Condensation","Freezing","Melting","Deposition","Sublimation"]),
+m("a3-02","Moisture processes","What is condensation?","Water vapour changing to liquid water",["Liquid water changing to water vapour","Ice changing to water vapour","Water vapour changing to ice"]),
+m("a3-03","Moisture processes","What is deposition?","Water vapour changing directly to ice",["Ice changing directly to water vapour","Liquid water changing to ice","Water vapour changing to liquid water"]),
+m("a3-04","Moisture processes","What is sublimation?","Ice changing directly to water vapour",["Water vapour changing directly to ice","Ice changing to liquid water","Liquid water changing to water vapour"],"Some textbooks use sublimation for both directions. The syllabus lists deposition separately, for vapour changing to ice."),
+m("a3-32","Moisture processes","What is freezing?","Liquid water changing to ice",["Water vapour changing to ice","Ice changing to liquid water","Liquid water changing to water vapour"]),
+m("a3-33","Moisture processes","What is melting?","Ice changing to liquid water",["Ice changing directly to water vapour","Liquid water changing to ice","Water vapour changing to liquid water"]),
+r("a3-05","Moisture processes","Which three processes take in latent heat, cooling the surroundings?",["Evaporation","Melting","Sublimation"]),
+r("a3-06","Moisture processes","Which three processes release latent heat, warming the surroundings?",["Condensation","Freezing","Deposition"]),
+r("a3-07","Moisture processes","What increases the rate of evaporation?",["Higher temperature","Dry air (low humidity)","Wind, which removes moist air"]),
+r("a3-08","Moisture processes","What is needed for condensation to happen?",["Air must be cooled to its dew point, so it is saturated","Condensation nuclei such as dust, smoke or salt, for the water to condense on"]),
+m("a3-09","Moisture processes","What is relative humidity?","The water vapour in the air as a percentage of the most it could hold at that temperature",["The mass of water vapour in a cubic metre of air","The temperature at which air becomes saturated","The amount of rain that falls in a day"]),
+m("a3-10","Moisture processes","What is the dew point?","The temperature at which air becomes saturated",["The time of night when dew forms","The height of the cloud base","The temperature at which water freezes"]),
+m("a3-11","Moisture processes","What is frost formed by deposition called?","Hoar frost",["Glaze","Sleet","Hail"]),
+r("a3-12","Causes of precipitation","Name the four causes of precipitation in the syllabus.",["Convection","Frontal uplift","Orographic uplift","Radiation cooling"]),
+m("a3-13","Causes of precipitation","Why does rising air cool?","Pressure falls with height, so the air expands and cools (adiabatic cooling)",["It moves further from the sun","It mixes with snow and ice","It loses heat to the ground"]),
+r("a3-14","Causes of precipitation","Explain convectional rainfall.",["The sun heats the ground, which heats the air above it","The warm air becomes less dense, rises, expands and cools","At the dew point, water vapour condenses to form cumulonimbus clouds","Heavy showers and thunderstorms follow"]),
+m("a3-15","Causes of precipitation","Where and when is convectional rainfall most common?","In the tropics, and on summer afternoons elsewhere",["At the poles in winter","On the leeward side of mountains","Over cold ocean currents"]),
+r("a3-16","Causes of precipitation","Explain frontal rainfall.",["A warm air mass meets a cold air mass","The warm air is less dense, so it is forced to rise over the cold air","It cools, water vapour condenses, and cloud and rain form along the front"]),
+r("a3-17","Causes of precipitation","Explain orographic (relief) rainfall.",["Moist air is forced to rise over mountains","It cools, and water vapour condenses to give cloud and rain on the windward side","The air descends and warms on the leeward side, giving a dry rain shadow"]),
+m("a3-18","Causes of precipitation","What is a rain shadow?","The dry area on the leeward side of a mountain range",["The wet area on the windward side of a mountain range","The area under a thundercloud","A period of light rain before a front"]),
+r("a3-19","Causes of precipitation","Explain radiation cooling.",["On clear, calm nights the ground loses heat by longwave radiation","The air in contact with the ground is cooled to its dew point","Water vapour condenses to give dew or fog, or frost below freezing"]),
+r("a3-20","Types of precipitation","Name the six types of precipitation in the syllabus.",["Clouds","Rain","Hail","Snow","Dew","Fog"]),
+r("a3-21","Types of precipitation","How do clouds form?",["Air rises and cools to its dew point","Water vapour condenses onto condensation nuclei","This forms tiny water droplets or ice crystals that stay suspended in the air"]),
+r("a3-22","Types of precipitation","Describe cumulus, stratus and cirrus clouds.",["Cumulus: heaped clouds formed by convection","Stratus: low, layered sheets of cloud","Cirrus: high, wispy clouds made of ice crystals"]),
+m("a3-23","Types of precipitation","Which cloud brings thunderstorms and hail?","Cumulonimbus",["Cirrus","Stratus","Altostratus"]),
+r("a3-24","Types of precipitation","Give the two ways raindrops form.",["Collision and coalescence: droplets collide and merge until they are heavy enough to fall","The ice crystal (Bergeron-Findeisen) process: ice crystals grow in cold clouds, fall and melt"]),
+r("a3-25","Types of precipitation","How does hail form?",["Strong updraughts in cumulonimbus clouds carry ice pellets up and down","Supercooled water freezes onto them in layers","They fall when they are too heavy for the updraughts to hold"]),
+r("a3-26","Types of precipitation","How does snow form?",["Water vapour is deposited as ice crystals, which join together into snowflakes","The air must stay at or close to freezing down to the ground, or the flakes melt into rain"]),
+r("a3-27","Types of precipitation","How does dew form?",["The ground cools at night by radiation","Air touching it is cooled below its dew point","Water vapour condenses directly onto the surface"]),
+m("a3-28","Types of precipitation","What is fog?","Cloud at ground level, with visibility below 1 kilometre",["Light rain falling from low cloud","Water droplets on the ground","Smoke trapped near the ground"]),
+r("a3-29","Types of precipitation","How does radiation fog form?",["On clear, calm nights the ground cools by radiation","The air above it is cooled to its dew point and water vapour condenses","It is common in valleys, where cold air collects"]),
+r("a3-30","Types of precipitation","How does advection fog form?",["Warm, moist air moves over a colder surface","The air is cooled to its dew point","For example sea fog over a cold ocean current"]),
+m("a3-31","Types of precipitation","Dew and radiation fog are both caused by which process?","Radiation cooling",["Convection","Frontal uplift","Orographic uplift"]),
+
+/* 2.4 The human impact */
+r("a4-01","Greenhouse effect","Explain the natural greenhouse effect.",["Shortwave solar radiation passes through the atmosphere and heats the Earth's surface","The surface emits longwave radiation","Greenhouse gases absorb some of it and re-radiate it back, which keeps the Earth warm"]),
+m("a4-02","Greenhouse effect","What is the enhanced greenhouse effect?","Human activity adds greenhouse gases, so more longwave radiation is trapped",["The natural warming that keeps the Earth habitable","Thinning of the ozone layer","Warming caused by changes in the sun's output"]),
+m("a4-03","Greenhouse effect","What is global warming?","The rise in the Earth's average surface temperature",["The warming of cities compared with the countryside","The seasonal warming of the northern hemisphere","The warming of the oceans by currents"]),
+r("a4-04","Greenhouse effect","Name the main greenhouse gases.",["Carbon dioxide","Methane","Nitrous oxide","CFCs","Water vapour"]),
+r("a4-05","Causes","What are the human sources of carbon dioxide?",["Burning fossil fuels in power stations, industry and vehicles","Deforestation, especially by burning"]),
+r("a4-06","Causes","What are the human sources of methane?",["Cattle and other livestock","Rice paddies","Landfill sites","Leaks from natural gas and coal production"]),
+r("a4-07","Causes","What are the sources of nitrous oxide and CFCs?",["Nitrous oxide: fertilisers and vehicle exhausts","CFCs: older refrigerants and aerosols, now largely phased out but long-lived"]),
+m("a4-08","Evidence","How has the concentration of carbon dioxide changed?","From about 280 parts per million before industry to over 420 today",["From about 100 parts per million to 200","From about 420 parts per million down to 280","It has stayed at about 350 parts per million"]),
+r("a4-09","Evidence","Give the evidence for global warming.",["Global temperature records show a rise of more than 1°C since the late 1800s","Glaciers and ice sheets are retreating and Arctic sea ice is shrinking","Sea level is rising, from melting land ice and thermal expansion of the oceans","Ice cores show temperature rising and falling with carbon dioxide levels"]),
+r("a4-10","Causes","Give the possible natural causes of climate change.",["Variations in the sun's output","Changes in the Earth's orbit and tilt (Milankovitch cycles)","Large volcanic eruptions, which cool the Earth for a few years"]),
+m("a4-11","Causes","Which of these is thought to be the main cause of recent global warming?","The enhanced greenhouse effect",["Changes in the Earth's orbit","Sunspot activity","Volcanic eruptions"]),
+r("a4-12","Atmospheric impacts","Give the atmospheric impacts of global warming.",["Higher air temperatures and more heatwaves","More evaporation, so more water vapour and more intense rainfall","Changing rainfall patterns: wetter in some regions, more drought in others","More intense tropical storms","Shifts in the pressure and wind belts"]),
+m("a4-13","Urban climate","What is an urban heat island?","An urban area that is warmer than the surrounding countryside",["A city park that is cooler than the streets around it","A rise in world temperature caused by cities","A warm ocean current near a coastal city"]),
+m("a4-14","Urban climate","When is the urban heat island strongest?","At night, in calm and clear conditions",["At midday, in windy conditions","During heavy rain","In the early morning, under thick cloud"]),
+r("a4-15","Urban climate","Give the causes of the urban heat island.",["Dark surfaces such as tarmac have a low albedo and absorb solar radiation","Concrete and brick store heat by day and release it at night","Heat is released by vehicles, heating, air conditioning and industry","Less vegetation and surface water, so less energy is used in evapotranspiration","Pollution traps outgoing longwave radiation"]),
+r("a4-16","Urban climate","Describe the temperature pattern across a city.",["Temperature rises sharply at the edge of the built-up area","It rises more gently across the suburbs","It peaks in the city centre","Parks and rivers form cooler patches"]),
+r("a4-17","Urban climate","How does an urban area affect humidity?",["Relative humidity is lower than in rural areas","There is less vegetation and surface water, so less evapotranspiration","Warmer air can hold more water vapour"]),
+r("a4-18","Urban climate","How does an urban area affect precipitation?",["Rainfall is higher over and downwind of cities, with more thunderstorms","The heat island increases convection","Pollution provides more condensation nuclei","Snow is less likely to fall and settle, because it is warmer"]),
+r("a4-19","Urban climate","How does an urban area affect winds?",["Average wind speed is lower, because buildings increase friction","Tall buildings funnel wind along streets, giving strong gusts","Buildings cause turbulence and eddies"]),
+r("a4-20","Urban climate","How does an urban area affect fog and air quality?",["Pollution provides condensation nuclei, which can increase fog","Pollutants combine with fog to form smog","Photochemical smog forms when sunlight acts on vehicle exhaust gases"]),
+r("a4-21","Urban climate","Name the four effects of human activity on climate that the urban case study must show.",["Temperature (heat island)","Humidity","Precipitation","Winds"]),
+r("a4-22","Urban climate","Which city is your urban climate case study, and what are its key figures?",["This depends on the city studied in class: check your notes for its name, the size of its heat island and its rainfall and wind effects"]),
+
+/* 3.1 Plate tectonics */
+m("r1-01","Plates","What is a tectonic plate?","A rigid slab of lithosphere that moves over the asthenosphere",["A layer of molten rock in the mantle","A block of crust between two faults","The solid inner core of the Earth"]),
+m("r1-02","Plates","What is the lithosphere?","The crust and the rigid top layer of the mantle",["The crust only","The semi-molten layer the plates move on","The whole of the mantle"]),
+m("r1-03","Plates","What is the asthenosphere?","The hot, plastic, partly molten layer of the upper mantle that plates move on",["The cold, rigid outer shell of the Earth that is broken into plates","The liquid outer core of the Earth, made of iron and nickel","The layer of sediment that covers the deep ocean floor"]),
+r("r1-04","Plates","Compare oceanic and continental crust.",["Oceanic: thin (about 5 to 10 km), dense, made of basalt and young","Continental: thick (about 30 to 70 km), less dense, made of granite and much older","Oceanic crust can be subducted; continental crust is too light to sink"]),
+r("r1-05","Plates","What makes plates move?",["Convection currents in the mantle","Slab pull: the sinking edge of a plate pulls the rest after it, now thought to be the main force","Ridge push: new crust at a ridge is raised and slides away under gravity"]),
+r("r1-06","Plates","Name the seven major plates.",["Pacific","North American","South American","Eurasian","African","Indo-Australian","Antarctic"]),
+r("r1-07","Plates","Describe the global pattern of plates and their boundaries.",["Seven major plates and several smaller ones, such as the Nazca plate","Earthquakes and volcanoes occur in narrow belts along plate boundaries","For example the Ring of Fire around the Pacific"]),
+r("r1-08","Boundaries","Name the three types of plate boundary.",["Divergent (constructive)","Convergent (destructive)","Conservative"]),
+m("r1-09","Boundaries","What happens at a divergent (constructive) boundary?","Plates move apart and new crust forms as magma rises",["Plates collide and crust is destroyed","Plates slide past each other","One plate sinks under another"]),
+m("r1-10","Boundaries","What happens at a convergent (destructive) boundary?","Plates move towards each other, and crust is destroyed or crumpled",["Plates move apart and new crust forms","Plates slide past each other","Plates stop moving"]),
+m("r1-11","Boundaries","What happens at a conservative boundary?","Plates slide past each other, and crust is neither made nor destroyed",["Plates move apart and new crust forms","One plate is subducted","Two continents collide"]),
+m("r1-12","Boundaries","Which is an example of a conservative boundary?","The San Andreas Fault",["The Mid-Atlantic Ridge","The Peru-Chile Trench","The Himalayas"]),
+m("r1-13","Boundaries","Which is an example of a divergent boundary?","The Mid-Atlantic Ridge",["The San Andreas Fault","The Mariana Trench","The Andes"]),
+r("r1-14","Boundaries","What features are found at a conservative boundary?",["Earthquakes, as the plates stick and then slip","No volcanoes, because no magma is produced"]),
+r("r1-15","Boundaries","Name the three types of convergent boundary.",["Oceanic and continental","Oceanic and oceanic","Continental and continental (collision)"]),
+r("r1-16","Boundaries","What happens where oceanic and continental plates converge?",["The denser oceanic plate is subducted beneath the continental plate","An ocean trench forms at the subduction zone","The continental edge is crumpled into fold mountains","Rising magma forms explosive volcanoes"]),
+m("r1-17","Boundaries","Which is an example of an oceanic and continental convergent boundary?","The Nazca plate beneath the South American plate, forming the Andes",["The Indo-Australian and Eurasian plates, forming the Himalayas","The North American and Eurasian plates in the Atlantic","The Pacific and North American plates in California"]),
+r("r1-18","Boundaries","What happens where two oceanic plates converge?",["The older, denser plate is subducted","A deep ocean trench forms","Rising magma builds a curved line of volcanic islands (an island arc)"]),
+r("r1-19","Boundaries","What happens where two continental plates converge?",["Neither plate is subducted, because both are too light","The crust is crumpled and pushed up into fold mountains","There are earthquakes but no volcanoes"]),
+m("r1-20","Boundaries","Which mountains formed where two continental plates collided?","The Himalayas",["The Andes","The Mid-Atlantic Ridge","The islands of Japan"]),
+r("r1-21","Processes","Name the processes and landforms in the syllabus.",["Sea floor spreading","Subduction","Fold mountain building","Ocean ridges","Ocean trenches","Volcanic island arcs"]),
+r("r1-22","Processes","What is sea floor spreading?",["Plates move apart at an ocean ridge","Magma rises to fill the gap and cools to form new oceanic crust","The new crust moves away from the ridge on both sides"]),
+r("r1-23","Processes","Give the evidence for sea floor spreading.",["The age of sea floor rock increases with distance from the ridge","Matching stripes of magnetic polarity lie on either side of the ridge (palaeomagnetism)","Sediment gets thicker away from the ridge"]),
+r("r1-24","Processes","What is subduction?",["A denser oceanic plate sinks beneath another plate into the mantle","The sinking plate heats up and partly melts, and the magma rises to form volcanoes","Friction as it sinks causes earthquakes along the Benioff zone"]),
+m("r1-25","Processes","What is the Benioff zone?","The sloping zone of earthquakes along a subducting plate",["The central valley of an ocean ridge","The flat floor of the deep ocean","The zone where two continents collide"]),
+r("r1-26","Processes","How are fold mountains built?",["Sediments collect on the sea floor between two converging plates","As the plates converge, the sediments are compressed, folded and pushed up","Examples are the Andes and the Himalayas"]),
+r("r1-27","Landforms","Describe an ocean ridge.",["A long underwater mountain chain at a divergent boundary","It has a central rift valley where magma rises","It is offset by transform faults"]),
+m("r1-28","Landforms","What forms where a divergent boundary lies under a continent?","A rift valley, such as the East African Rift",["An ocean trench","A volcanic island arc","A range of fold mountains"]),
+r("r1-29","Landforms","Describe an ocean trench.",["A long, narrow, very deep depression in the sea floor","It forms where an oceanic plate bends down at a subduction zone","For example the Mariana Trench, about 11 km deep"]),
+r("r1-30","Landforms","Describe a volcanic island arc.",["A curved chain of volcanic islands","It forms on the overriding plate, parallel to an ocean trench","Examples are Japan, the Aleutian Islands and the Mariana Islands"]),
+r("r1-31","Landforms","Compare volcanoes at divergent and convergent boundaries.",["Divergent: runny basaltic lava and gentle eruptions","Convergent: thick, sticky lava rich in silica and explosive eruptions"]),
+m("r1-32","Landforms","An ocean trench is found at which type of boundary?","Convergent (destructive)",["Divergent (constructive)","Conservative","All three types"]),
+m("r1-33","Landforms","An ocean ridge is found at which type of boundary?","Divergent (constructive)",["Convergent (destructive)","Conservative","All three types"]),
+
+/* 3.2 Weathering */
+m("r2-01","Basics","What is weathering?","The breakdown of rock in place, at or near the Earth's surface",["The removal of rock by rivers, ice or wind","The movement of material downslope under gravity","The melting of rock in the mantle"]),
+m("r2-02","Basics","How is weathering different from erosion?","Weathering happens in place; erosion involves removal by a moving agent",["Weathering is faster than erosion","Weathering affects only soft rock","Erosion happens only in rivers"]),
+r("r2-03","Basics","What is the difference between physical and chemical weathering?",["Physical: rock is broken into smaller pieces with no change in its chemical make-up","Chemical: minerals in the rock are changed or dissolved by chemical reactions"]),
+r("r2-04","Physical","Name the five physical weathering processes in the syllabus.",["Freeze-thaw","Heating and cooling","Salt crystal growth","Pressure release (dilatation)","Vegetation root action"]),
+r("r2-05","Physical","Explain freeze-thaw weathering.",["Water enters cracks and joints in the rock","It freezes and expands by about 9 per cent, putting pressure on the rock","Repeated freezing and thawing widens the crack until pieces break off"]),
+r("r2-06","Physical","What conditions does freeze-thaw need, and what does it produce?",["Temperatures that move above and below 0°C","A supply of water, and rock with cracks or joints","It produces angular fragments, which collect as scree"]),
+r("r2-07","Physical","Explain heating and cooling weathering.",["Rock expands when heated by day and contracts when it cools at night","The outer layer heats and cools more than the inside, which sets up stress","The outer layers peel off (exfoliation) or grains break apart","It is most effective when some moisture is present"]),
+m("r2-08","Physical","Where is heating and cooling weathering most effective?","Hot deserts, with a large daily temperature range",["Humid tropical rainforests","Polar ice caps","Cool temperate coasts"]),
+r("r2-09","Physical","Explain salt crystal growth.",["Salt water gets into pores and cracks in the rock","The water evaporates and salt crystals grow, which puts pressure on the rock","Grains and flakes are forced off the surface"]),
+m("r2-10","Physical","Where is salt crystal growth most effective?","Hot deserts and coasts",["Cold mountain tops","Humid rainforests","Deep underground"]),
+r("r2-11","Physical","Explain pressure release (dilatation).",["Rock that formed deep underground is under great pressure","When the overlying rock is eroded away, the pressure is released","The rock expands and cracks parallel to the surface, and sheets peel away"]),
+m("r2-12","Physical","Which rock is most associated with pressure release?","Granite",["Chalk","Clay","Limestone"]),
+r("r2-13","Physical","Explain vegetation root action.",["Roots grow into cracks and joints in the rock","As the roots grow and thicken, they force the cracks wider apart"]),
+r("r2-14","Chemical","Name the three chemical weathering processes in the syllabus.",["Hydrolysis","Hydration","Carbonation"]),
+r("r2-15","Chemical","Explain hydrolysis.",["Slightly acidic water reacts with minerals in the rock","Feldspar in granite is broken down into clay (kaolinite)","Quartz and mica are left behind"]),
+r("r2-16","Chemical","Explain hydration.",["Minerals absorb water into their structure","They expand and change, which weakens the rock","For example anhydrite takes in water to become gypsum"]),
+r("r2-17","Chemical","Explain carbonation.",["Rainwater absorbs carbon dioxide to form weak carbonic acid","The acid reacts with calcium carbonate in limestone","This forms calcium bicarbonate, which is soluble and is carried away in solution"]),
+m("r2-18","Chemical","Which rock is most affected by carbonation?","Limestone",["Granite","Basalt","Sandstone"]),
+m("r2-19","Chemical","Which rock is most affected by hydrolysis?","Granite",["Limestone","Chalk","Rock salt"]),
+m("r2-20","Chemical","Why can carbonation be effective in cold conditions?","Carbon dioxide is more soluble in cold water",["Limestone only forms in cold places","Cold water freezes in the joints","Chemical reactions are faster in the cold"]),
+r("r2-21","General factors","Name the five general factors affecting the type and rate of weathering.",["Climate","Rock type","Rock structure","Vegetation","Relief"]),
+r("r2-22","General factors","How does climate affect weathering?",["Chemical weathering is fastest in hot, wet climates: reaction rates roughly double with every 10°C rise","Freeze-thaw needs temperatures that cross 0°C, plus water","Very dry climates have little weathering, because there is little water"]),
+r("r2-23","General factors","How does rock type affect weathering?",["It depends on the minerals in the rock","Limestone is calcium carbonate, so it is attacked by carbonation","Granite contains feldspar, so it is attacked by hydrolysis","Quartz is very resistant"]),
+r("r2-24","General factors","How does rock structure affect weathering?",["Joints, cracks and bedding planes let water in","They increase the surface area open to attack","Porous rocks hold water, which helps freeze-thaw and chemical weathering"]),
+r("r2-25","General factors","How does vegetation affect weathering?",["Roots widen cracks in the rock","Decaying plants release organic acids, which increase chemical weathering","A cover of vegetation and soil protects rock from temperature extremes"]),
+r("r2-26","General factors","How does relief affect weathering?",["On steep slopes weathered material is removed, which exposes fresh rock","On gentle slopes weathered material builds up, protects the rock and holds water","Temperature falls with height, so freeze-thaw is more likely at altitude"]),
+m("r2-27","Peltier diagram","What does the Peltier diagram show?","How the type and rate of weathering vary with mean annual temperature and rainfall",["How river velocity relates to particle size","How discharge changes after a storm","How slope angle affects mass movement"]),
+r("r2-28","Peltier diagram","What are the two axes of the Peltier diagram?",["Mean annual temperature","Mean annual rainfall"]),
+m("r2-29","Peltier diagram","Where does Peltier show strong chemical weathering?","Hot and wet climates",["Cold and dry climates","Hot and dry climates","Cold climates with moderate rainfall"]),
+m("r2-30","Peltier diagram","Where does Peltier show strong physical (frost) weathering?","Cold climates with moderate rainfall",["Hot climates with high rainfall","Hot climates with low rainfall","Warm climates with high rainfall"]),
+m("r2-31","Peltier diagram","Where does Peltier show very slight weathering?","Hot and dry climates",["Hot and wet climates","Cold climates with moderate rainfall","Cool, wet climates"]),
+r("r2-32","Peltier diagram","Give the limitations of the Peltier diagram.",["It uses annual means, so it hides daily and seasonal variation","It ignores rock type and structure","It ignores vegetation, relief and local conditions"]),
+
+/* 3.3 Slope processes */
+m("r3-01","Mass movement","What is mass movement?","The downslope movement of material under gravity",["The breakdown of rock in place","The transport of sediment by a river","The uplift of land by plate movement"]),
+r("r3-02","Mass movement","Name the four types of mass movement in the syllabus.",["Heaves","Flows","Slides","Falls"]),
+r("r3-03","Mass movement","When does a slope fail?",["When shear stress (the forces pulling material downslope) is greater than shear strength (the forces holding it in place)","Stress rises with a steeper slope or added weight; strength falls when the material is saturated"]),
+r("r3-04","Mass movement","How does water make mass movement more likely?",["It adds weight to the slope","It raises pore water pressure, which pushes particles apart and reduces friction","It lubricates the surfaces that material can slide along"]),
+r("r3-05","Heaves","Explain soil creep (heave).",["Soil particles are lifted at right angles to the slope when the soil is wet or frozen and expands","They drop back vertically when the soil dries or thaws","Each cycle moves the particles slightly downslope"]),
+m("r3-06","Heaves","How fast is soil creep?","Very slow, a few millimetres a year",["A few metres a day","Several metres a second","A few kilometres a year"]),
+r("r3-07","Heaves","Give the evidence for soil creep.",["Terracettes: small steps across the slope","Tilted fences, posts and walls","Tree trunks curved at the base","Soil piled up behind walls"]),
+m("r3-08","Heaves","Under what conditions does soil creep happen?","Gentle, vegetated slopes with cycles of wetting and drying or freezing and thawing",["Vertical rock faces","Saturated slopes after intense rain","Only on bare desert slopes"]),
+r("r3-09","Flows","Describe a flow.",["Material moves downslope as a fluid, mixing as it goes","It has a high water content","The more water it holds, the faster it moves"]),
+r("r3-10","Flows","Under what conditions does a mudflow happen?",["Heavy rainfall saturates fine material","Slopes are steep","There is little vegetation to bind the soil"]),
+m("r3-11","Flows","What is solifluction?","The slow flow of saturated soil over frozen ground in cold regions",["The fall of rock from a cliff","The slow heave of soil on a temperate slope","A slide along a curved slip plane"]),
+r("r3-12","Flows","What effect do flows have on slopes?",["They leave a scar or channel where the material came from","They deposit a lobe of material at the foot of the slope"]),
+r("r3-13","Slides","Describe a slide.",["A mass of material moves as one block along a slip plane","The material stays largely intact, without mixing"]),
+r("r3-14","Slides","What is the difference between a planar slide and a rotational slide?",["Planar (translational): material slides along a flat plane, such as a bedding plane","Rotational (slump): material slides along a curved slip plane and tilts backwards"]),
+r("r3-15","Slides","Under what conditions do slides happen?",["Weak or permeable rock lies over impermeable rock such as clay","Heavy rain saturates the slope and lubricates the slip plane","The base of the slope is undercut by a river, the sea or people"]),
+r("r3-16","Slides","What effect do slides have on slopes?",["A steep scar is left at the top","A rotational slide leaves stepped, back-tilted blocks","Material piles up as a toe at the base"]),
+r("r3-17","Falls","Describe a rockfall.",["Rock breaks away from a steep face and falls freely","It is the fastest type of mass movement"]),
+r("r3-18","Falls","Under what conditions do falls happen?",["Very steep or vertical faces of well-jointed rock","Freeze-thaw or pressure release loosens blocks","The base is undercut, or an earthquake shakes the rock loose"]),
+m("r3-19","Falls","What landform builds up at the foot of a rock face from falls?","A scree (talus) slope",["A point bar","A rotational slump","A terracette"]),
+r("r3-20","Mass movement","Which type of mass movement is slowest and which is fastest?",["Slowest: heave (creep)","Fastest: falls","Flows and slides vary: solifluction is slow, mudflows and landslides are rapid"]),
+m("r3-21","Mass movement","Which type of mass movement usually has the highest water content?","Flow",["Fall","Heave","Slide"]),
+r("r3-22","Water and sediment","Name the processes of water and sediment movement on slopes.",["Rainsplash","Surface runoff: sheetwash","Surface runoff: rills"]),
+r("r3-23","Water and sediment","Explain rainsplash.",["Raindrops hit bare soil and knock particles into the air","On a slope, more particles land downslope than upslope","So there is a net movement of soil downslope"]),
+m("r3-24","Water and sediment","When is rainsplash most effective?","On bare soil during intense rainfall",["On thick forest floors","On frozen ground","On bare rock faces"]),
+r("r3-25","Water and sediment","Explain sheetwash.",["A thin, unchannelled layer of water flows over the surface","It happens when rainfall is greater than the infiltration capacity, or the soil is saturated","It carries fine particles downslope"]),
+r("r3-26","Water and sediment","What are rills?",["Small channels a few centimetres deep, cut where surface flow concentrates","They can grow into gullies"]),
+r("r3-27","Water and sediment","What conditions favour sheetwash and rills?",["Intense rainfall","Sparse vegetation","Compacted or impermeable soils"]),
+r("r3-28","Water and sediment","What effect do rainsplash, sheetwash and rills have on slopes?",["Rainsplash and sheetwash remove fine soil evenly, slowly lowering the surface","Rills cut small channels into the slope, which can deepen into gullies","The eroded material is deposited at the foot of the slope"]),
+
+/* 3.4 The human impact */
+r("r4-01","Stability","Give the ways human activity decreases slope stability.",["Removing vegetation, so roots no longer bind the soil","Undercutting or steepening the slope, for example road cuttings and quarrying","Loading the slope with buildings, waste tips or spoil heaps","Adding water, through leaking pipes, drains or irrigation","Vibration from traffic or blasting"]),
+r("r4-02","Stability","Why does loading the top of a slope decrease stability?",["It adds weight, so shear stress increases"]),
+r("r4-03","Stability","Why does cutting into the base of a slope decrease stability?",["It makes the slope steeper","It removes the support for the material above"]),
+r("r4-04","Stability","Give the ways human activity increases slope stability.",["Draining the slope to lower pore water pressure","Planting vegetation","Reducing the slope angle (grading)","Pinning and netting rock faces","Building retaining walls at the base"]),
+r("r4-05","Strategies","Name the four strategies to reduce mass movement in the syllabus.",["Pinning","Netting","Grading","Afforestation"]),
+r("r4-06","Strategies","What is pinning?",["Steel bolts or rods are drilled through loose rock into the stable rock behind","They tie the surface blocks to the slope"]),
+r("r4-07","Strategies","What is netting?",["Wire mesh is fixed over a rock face","It holds loose rock in place or guides falling rock safely to the base"]),
+r("r4-08","Strategies","What is grading?",["The slope is reshaped to a gentler angle, sometimes in steps","This reduces the shear stress on the slope"]),
+r("r4-09","Strategies","How does afforestation reduce mass movement?",["Roots bind the soil together","Trees intercept rainfall","Trees take up water, so the soil is drier"]),
+r("r4-10","Strategies","Evaluate pinning and netting.",["Pinning is effective on rock faces, but expensive and only suited to solid rock","Netting is cheaper, but it only contains falling rock: it does not stop the slope failing, and it needs maintenance"]),
+r("r4-11","Strategies","Evaluate grading and afforestation.",["Grading is effective, but needs a lot of space and earth moving","Afforestation is cheap and sustainable, but takes years to work and does not stop deep slides"]),
+m("r4-12","Strategies","Which strategy suits a vertical rock face beside a road, with no room to cut the slope back?","Pinning and netting",["Afforestation","Grading the slope to a gentle angle","Building a spoil tip"]),
+r("r4-13","Case study","What must the slope case study show?",["The effect of human activity on the stability of the slope","An evaluation of attempts to reduce mass movement"]),
+
+/* Case study: Aberfan */
+m("abe-01","Key facts","When was the Aberfan disaster?","21 October 1966",["21 November 1966","21 October 1956","21 October 1976"],"The poster says November. The disaster was on 21 October 1966."),
+m("abe-02","Key facts","What type of event was it?","Mass movement",["River flood","Earthquake","Coastal erosion"]),
+m("abe-03","Key facts","Where is Aberfan?","South Wales",["North Wales","Cumbria","Cornwall"]),
+m("abe-04","Key facts","What collapsed?","A coal spoil tip",["A dam","A quarry wall","A mine shaft"]),
+m("abe-05","Key facts","How many people died?","144",["44","116","244"]),
+m("abe-06","Key facts","How many of those who died were children?","116",["16","66","144"]),
+r("abe-07","Key facts","Give the five headline facts.",["21 October 1966","Aberfan, South Wales","Collapse of a coal spoil tip","144 deaths, 116 of them children","School destroyed"]),
+r("abe-08","Physical causes","Name the three physical causes.",["Heavy rainfall","Steep valley slopes","Water build up"]),
+r("abe-09","Physical causes","Explain how heavy rainfall contributed.",["Prolonged rain saturated the spoil tip","Increased weight and instability"]),
+r("abe-10","Physical causes","Explain how the steep valley slopes contributed.",["The tip was on a hillside above the village","Gravity increased movement"]),
+r("abe-11","Physical causes","Explain the water build up.",["Underground springs were present","Water collected inside the tip"]),
+r("abe-12","Human causes","Name the three human causes.",["Poor site choice","Lack of management","Ignored warnings"]),
+r("abe-13","Human causes","What was wrong with the site choice?",["The spoil tip was built above the school and village"]),
+r("abe-14","Human causes","What does ‘lack of management’ mean here?",["No monitoring of the tip’s stability"]),
+r("abe-15","Human causes","What warnings were ignored?",["Previous small slides had been reported","Risks were known but ignored"]),
+m("abe-16","Human causes","Which was the main cause?","Human misjudgement, with rainfall as the trigger",["Heavy rainfall, with human error as the trigger","Steep slopes alone","Underground springs alone"]),
+r("abe-17","Impacts","Name the three social impacts.",["144 deaths","School destroyed","Community trauma"]),
+r("abe-18","Impacts","Name the economic impacts.",["Cost of damage and compensation","Long-term decline in the area"]),
+r("abe-19","Impacts","Name the environmental impacts.",["Debris","Village covered in mud"]),
+r("abe-20","Responses","Name the immediate responses.",["Rescue efforts by locals and emergency services","Bodies recovered from the debris"]),
+r("abe-21","Responses","Name the three long-term responses.",["Legal changes","Monitoring","Compensation"]),
+r("abe-22","Responses","What did each long-term response involve?",["Legal changes: stricter regulations on spoil tips","Monitoring: better inspection of mining waste","Compensation: payments to families"]),
+r("abe-23","Conclusion","Give the overall conclusion in three parts.",["Mainly caused by human mismanagement","Natural factors acted as a trigger","Largely preventable"])
+];
+
+var byId={}, topicById={};
+Q.forEach(function(q){byId[q.id]=q;});
+TOPICS.forEach(function(t){topicById[t.id]=t;});
+var WEAK_SIZE=20, WEAK_MIN=5;
+
+function load(k,f){try{var v=localStorage.getItem(k);return v?JSON.parse(v):f;}catch(e){return f;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function drop(k){try{localStorage.removeItem(k);}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}return a;}
+
+var stats=load("pq.stats",{});
+var prefs=load("pq.prefs",{shuffle:true,sel:[]});
+if(!prefs||typeof prefs!=="object")prefs={shuffle:true,sel:[]};
+if(!Array.isArray(prefs.sel))prefs.sel=[];
+var sess=load("pq.session",null);
+if(sess&&(!Array.isArray(sess.ids)||!sess.ids.every(function(id){return byId[id];})||sess.i>=sess.ids.length))sess=null;
+
+var view="home", cur=null, last=null, askReset=false;
+var app=document.getElementById("app");
+
+function known(list){var s=0;list.forEach(function(q){if(stats[q.id])s+=stats[q.id].s;});return list.length?Math.round(100*s/list.length):0;}
+function answered(list){return list.filter(function(q){return stats[q.id];}).length;}
+function weakest(){
+  var a=Q.filter(function(q){return stats[q.id];});
+  a.sort(function(x,y){var sx=stats[x.id],sy=stats[y.id];return (sx.s-sy.s)||(sx.t-sy.t);});
+  return a.slice(0,WEAK_SIZE).map(function(q){return q.id;});
+}
+function order(ids){return prefs.shuffle?shuffle(ids):ids;}
+
+function start(label,ids){
+  if(!ids.length)return;
+  sess={label:label,ids:ids,i:0,res:{}};save("pq.session",sess);nextQ();
+}
+function nextQ(){
+  if(!sess){view="home";render();return;}
+  if(sess.i>=sess.ids.length){finish();return;}
+  var q=byId[sess.ids[sess.i]];
+  cur={q:q,pos:sess.i,done:false,
+       opts:q.type==="mc"?shuffle([q.a].concat(q.d)):null,picked:null,
+       shown:false,ticks:q.type==="rc"?q.p.map(function(){return false;}):null};
+  view="quiz";render();window.scrollTo(0,0);
+}
+function record(score){
+  var id=cur.q.id,st=stats[id]||{n:0,s:0};
+  st.s=st.n?(st.s+score)/2:score;st.n+=1;st.t=Date.now();
+  stats[id]=st;save("pq.stats",stats);
+  sess.res[id]=score;sess.i=cur.pos+1;save("pq.session",sess);cur.done=true;
+}
+function finish(){last=sess;sess=null;drop("pq.session");view="done";render();window.scrollTo(0,0);}
+
+function renderHome(){
+  var total=Q.length,ans=answered(Q),weakN=Math.min(WEAK_SIZE,ans);
+  var selIds=Q.filter(function(q){return prefs.sel.indexOf(q.t)>-1;}).map(function(q){return q.id;});
+  var h='<header class="block"><h1><span class="mark">Physical geography quiz</span></h1>'+
+    '<p class="sub">'+total+' questions on Cambridge AS Level Geography (9696) Paper 1. '+ans+' answered so far, '+known(Q)+'% known.</p></header>';
+  if(sess){
+    h+='<section class="resume"><h2>'+esc(sess.label)+', in progress</h2>'+
+      '<p class="sub">You’re on question '+(sess.i+1)+' of '+sess.ids.length+'.</p>'+
+      '<button class="btn" data-act="resume">Carry on</button></section>';
+  }
+  h+='<section class="block"><h2>Everything</h2>'+
+    '<p class="sub">The whole Paper 1 syllabus, plus the Kendal, River Tees and Aberfan case studies. Stop whenever you like and it keeps your place.</p>'+
+    '<button class="btn'+(sess?' ghost':'')+'" data-act="all">Start all '+total+' questions</button></section>';
+  h+='<section class="block"><h2>By topic</h2><p class="sub">Tick one or more. The bar shows how much of each you know.</p><div class="topics">';
+  GROUPS.forEach(function(g){
+    var mine=TOPICS.filter(function(t){return t.g===g.id;});
+    var allOn=mine.every(function(t){return prefs.sel.indexOf(t.id)>-1;});
+    h+='<div class="ghead" style="--t:var(--'+g.id+')"><h3>'+esc(g.name)+'</h3><button class="link" data-act="group" data-id="'+g.id+'">'+(allOn?'Clear':'Select all')+'</button></div>';
+    mine.forEach(function(t){
+    var list=Q.filter(function(q){return q.t===t.id;}),on=prefs.sel.indexOf(t.id)>-1,k=known(list);
+    h+='<button class="topic" data-act="topic" data-id="'+t.id+'" aria-pressed="'+on+'" style="--t:var(--'+t.g+')">'+
+      '<span class="swatch" aria-hidden="true">'+(on?'✓':'')+'</span>'+
+      '<span class="tname">'+esc(t.name)+'<span class="tmeta">'+list.length+' questions, '+answered(list)+' answered</span></span>'+
+      '<span class="tpct">'+k+'%</span>'+
+      '<span class="meter"><span style="width:'+k+'%"></span></span></button>';
+    });
+  });
+  h+='</div><button class="btn ghost" data-act="topics"'+(selIds.length?'':' disabled')+'>'+
+    (selIds.length?'Start '+selIds.length+' questions':'Pick a topic')+'</button></section>';
+  h+='<section class="block"><h2>Least well known</h2>';
+  if(ans>=WEAK_MIN){
+    h+='<p class="sub">Your '+weakN+' lowest scoring questions, worked out from your answers. It updates every time you answer.</p>'+
+      '<button class="btn ghost" data-act="weak">Start my weakest '+weakN+'</button>';
+  }else{
+    h+='<p class="sub">This builds itself from your answers. Answer at least '+WEAK_MIN+' questions and it unlocks.</p>'+
+      '<button class="btn ghost" disabled>Not enough answers yet</button>';
+  }
+  h+='</section>';
+  h+='<footer class="foot"><button class="switch" data-act="shuffle" aria-pressed="'+!!prefs.shuffle+'"><i aria-hidden="true"></i><span>Mix up the question order</span></button>';
+  if(askReset){
+    h+='<p>Clear every score and start from zero?</p><div class="row"><button class="btn ghost" data-act="reset-yes">Yes, clear scores</button><button class="btn" data-act="reset-no">Keep them</button></div>';
+  }else if(ans){
+    h+='<button class="link" data-act="reset" style="align-self:flex-start">Reset my scores</button>';
+  }
+  h+='<p class="sub">Scores are saved on this device only.</p></footer>';
+  app.innerHTML=h;
+}
+
+function renderQuiz(){
+  var q=cur.q,t=topicById[q.t],n=sess?sess.ids.length:0,pos=cur.pos,L="ABCD";
+  var h='<div class="bar"><button class="link" data-act="exit">Save and exit</button><span class="count">'+(pos+1)+' / '+n+'</span></div>'+
+    '<div class="track"><div style="width:'+Math.round(100*(pos+(cur.done?1:0))/n)+'%"></div></div>'+
+    '<article class="qcard" style="--t:var(--'+topicById[q.t].g+')">'+
+    '<p class="tag"><span class="hl">'+esc(t.name)+'</span><span class="sec">'+esc(q.sec)+'</span></p>'+
+    '<h2 class="q">'+esc(q.q)+'</h2>';
+  if(q.type==="mc"){
+    h+='<div class="opts">';
+    cur.opts.forEach(function(o,i){
+      var cls="opt";
+      if(cur.picked!==null){
+        if(o===q.a)cls+=" right";else if(i===cur.picked)cls+=" wrong";else cls+=" dim";
+      }
+      h+='<button class="'+cls+'" data-act="pick" data-i="'+i+'"'+(cur.picked!==null?' disabled':'')+'><b>'+L[i]+'</b><span>'+esc(o)+'</span></button>';
+    });
+    h+='</div>';
+    if(cur.picked!==null){
+      var ok=cur.opts[cur.picked]===q.a;
+      h+='<p class="verdict '+(ok?'ok':'no')+'">'+(ok?'Correct.':'Not this time. The answer is '+esc(q.a)+'.')+'</p>';
+      if(q.note)h+='<p class="note">'+esc(q.note)+'</p>';
+      h+='<button class="btn" data-act="next" data-focus>'+(pos+1>=n?'Finish':'Next')+'</button>';
+    }
+  }else if(!cur.shown){
+    h+='<p class="hint">'+(q.p.length>1?q.p.length+' points to recall. ':'')+'Say it out loud, then check.</p>'+
+      '<button class="btn" data-act="show" data-focus>Show answer</button>';
+  }else if(q.p.length===1){
+    h+='<p class="answer">'+esc(q.p[0])+'</p>'+(q.note?'<p class="note">'+esc(q.note)+'</p>':'')+
+      '<div class="row"><button class="btn" data-act="got" data-focus>Got it</button><button class="btn ghost" data-act="missed">Missed it</button></div>';
+  }else{
+    var got=cur.ticks.filter(Boolean).length;
+    h+='<p class="hint">Tick the ones you got.</p><div class="points">';
+    q.p.forEach(function(p,i){
+      h+='<button class="opt'+(cur.ticks[i]?' on':'')+'" data-act="tick" data-i="'+i+'" aria-pressed="'+cur.ticks[i]+'"><b>'+(cur.ticks[i]?'✓':(i+1))+'</b><span>'+esc(p)+'</span></button>';
+    });
+    h+='</div>'+(q.note?'<p class="note">'+esc(q.note)+'</p>':'')+'<div class="row"><button class="btn" data-act="next" data-focus>'+(pos+1>=n?'Finish':'Next')+' ('+got+' of '+q.p.length+')</button>'+
+      '<button class="btn ghost" data-act="gotall">Got them all</button></div>';
+  }
+  h+='</article>';
+  app.innerHTML=h;
+}
+
+function renderDone(){
+  var ids=last.ids,sum=0,missed=[];
+  ids.forEach(function(id){var s=last.res[id]||0;sum+=s;if(s<1)missed.push(id);});
+  var pct=Math.round(100*sum/ids.length),full=ids.length-missed.length;
+  var h='<header class="block"><h1><span class="mark">'+esc(last.label)+', done</span></h1>'+
+    '<p class="score">'+pct+'%</p>'+
+    '<p class="sub">'+full+' of '+ids.length+' questions fully right.</p></header>';
+  var seen=TOPICS.filter(function(t){return ids.some(function(id){return byId[id].t===t.id;});});
+  if(seen.length>1){
+    h+='<section class="block"><h2>By topic</h2><ul class="split">';
+    seen.forEach(function(t){
+      var l=ids.filter(function(id){return byId[id].t===t.id;}),s=0;
+      l.forEach(function(id){s+=last.res[id]||0;});
+      h+='<li style="--t:var(--'+t.g+')"><span>'+esc(t.name)+'</span><b>'+Math.round(100*s/l.length)+'%</b></li>';
+    });
+    h+='</ul></section>';
+  }
+  h+='<div class="row">';
+  if(missed.length)h+='<button class="btn" data-act="retry" data-focus>Go again on the '+missed.length+' I missed</button>';
+  h+='<button class="btn'+(missed.length?' ghost':'')+'" data-act="home"'+(missed.length?'':' data-focus')+'>Back to the start</button></div>';
+  if(missed.length){
+    h+='<section class="block"><h2>To go over</h2><ul class="missed">';
+    missed.forEach(function(id){
+      var q=byId[id];
+      h+='<li style="--t:var(--'+topicById[q.t].g+')"><span class="mq">'+esc(q.q)+'</span><span class="ma">'+esc(q.type==="mc"?q.a:q.p.join("; "))+'</span></li>';
+    });
+    h+='</ul></section>';
+  }
+  app.innerHTML=h;
+}
+
+function render(){
+  if(view==="quiz"&&cur)renderQuiz();
+  else if(view==="done"&&last)renderDone();
+  else{view="home";renderHome();}
+  var f=app.querySelector("[data-focus]");
+  if(f){try{f.focus({preventScroll:true});}catch(e){}}
+}
+
+function act(a,el){
+  var i=el?parseInt(el.getAttribute("data-i"),10):-1;
+  switch(a){
+    case "all":start("Everything",order(Q.map(function(q){return q.id;})));break;
+    case "topic":
+      var id=el.getAttribute("data-id"),k=prefs.sel.indexOf(id);
+      if(k>-1)prefs.sel.splice(k,1);else prefs.sel.push(id);
+      save("pq.prefs",prefs);render();break;
+    case "group":
+      var gid=el.getAttribute("data-id"),gt=TOPICS.filter(function(t){return t.g===gid;}).map(function(t){return t.id;});
+      var every=gt.every(function(x){return prefs.sel.indexOf(x)>-1;});
+      prefs.sel=prefs.sel.filter(function(x){return gt.indexOf(x)<0;});
+      if(!every)prefs.sel=prefs.sel.concat(gt);
+      save("pq.prefs",prefs);render();break;
+    case "topics":
+      var names=TOPICS.filter(function(t){return prefs.sel.indexOf(t.id)>-1;}).map(function(t){return t.name;});
+      start(names.length===1?names[0]:names.length+" topics",order(Q.filter(function(q){return prefs.sel.indexOf(q.t)>-1;}).map(function(q){return q.id;})));break;
+    case "weak":start("Least well known",weakest());break;
+    case "resume":nextQ();break;
+    case "exit":view="home";cur=null;render();window.scrollTo(0,0);break;
+    case "pick":
+      if(cur.picked!==null)break;
+      cur.picked=i;record(cur.opts[i]===cur.q.a?1:0);render();break;
+    case "show":cur.shown=true;render();break;
+    case "got":record(1);nextQ();break;
+    case "missed":record(0);nextQ();break;
+    case "tick":cur.ticks[i]=!cur.ticks[i];render();break;
+    case "gotall":record(1);nextQ();break;
+    case "next":
+      if(cur.q.type==="rc"&&!cur.done)record(cur.ticks.filter(Boolean).length/cur.q.p.length);
+      nextQ();break;
+    case "retry":
+      start("Missed questions",last.ids.filter(function(id){return (last.res[id]||0)<1;}));break;
+    case "home":view="home";last=null;render();window.scrollTo(0,0);break;
+    case "shuffle":prefs.shuffle=!prefs.shuffle;save("pq.prefs",prefs);render();break;
+    case "reset":askReset=true;render();break;
+    case "reset-no":askReset=false;render();break;
+    case "reset-yes":stats={};sess=null;askReset=false;drop("pq.stats");drop("pq.session");render();break;
+  }
+}
+
+app.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");
+  if(!el||el.disabled)return;
+  act(el.getAttribute("data-act"),el);
+});
+
+document.addEventListener("keydown",function(e){
+  if(view!=="quiz"||!cur||e.metaKey||e.ctrlKey||e.altKey)return;
+  var k=e.key.toLowerCase(),n="1234567890".indexOf(k),l="abcd".indexOf(k);
+  if(cur.q.type==="mc"&&cur.picked===null){
+    var idx=l>-1?l:n;
+    if(idx>-1&&idx<cur.opts.length){e.preventDefault();act("pick",app.querySelectorAll('[data-act="pick"]')[idx]);}
+  }else if(cur.q.type==="rc"&&cur.shown&&cur.q.p.length>1&&n>-1&&n<cur.q.p.length){
+    e.preventDefault();act("tick",app.querySelectorAll('[data-act="tick"]')[n]);
+  }
+});
+
+render();
+})();
+</script>
+</body>
+</html>
