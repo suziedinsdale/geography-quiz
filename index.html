@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Geography Case Study Quiz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: one narrow column, phone first. Home is a menu of three ways in; the quiz shows one question per screen.
+   Each case study keeps the marker colour of its poster title, laid down like a highlighter stroke. */
+:root{
+  --paper:#F4F6FA; --card:#FFFFFF; --ink:#141824; --ink-2:#565D70; --line:#D9DDE7;
+  --hl:#FFE95E;
+  --good:#17703C; --good-bg:#D3F4D7; --bad:#B3243D; --bad-bg:#FFDCE2;
+  --mex:#D3342C; --dha:#C96200; --ken:#1D6BC0; --abe:#7A4B2C; --hai:#7A3DA8; --tee:#0B857F; --oth:#4A5672;
+  --display:"Bricolage Grotesque","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  --t:var(--ink);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12141B; --card:#1C1F2A; --ink:#EEF0F6; --ink-2:#A3A9BB; --line:#313545;
+    --hl:#7A6C00;
+    --good:#6FDB98; --good-bg:#173A26; --bad:#FF8A9B; --bad-bg:#47202A;
+    --mex:#FF6F64; --dha:#FFA24D; --ken:#6DB2FF; --abe:#D6A784; --hai:#C797F2; --tee:#4FD1C8; --oth:#AEB8D0;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12141B; --card:#1C1F2A; --ink:#EEF0F6; --ink-2:#A3A9BB; --line:#313545;
+  --hl:#7A6C00;
+  --good:#6FDB98; --good-bg:#173A26; --bad:#FF8A9B; --bad-bg:#47202A;
+  --mex:#FF6F64; --dha:#FFA24D; --ken:#6DB2FF; --abe:#D6A784; --hai:#C797F2; --tee:#4FD1C8; --oth:#AEB8D0;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;padding-inline:16px;padding-block:20px 40px}
+#app{max-width:620px;margin-inline:auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3,p{margin:0}
+h1{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.15rem;text-wrap:balance}
+.mark{background:linear-gradient(transparent 52%,var(--hl) 52%,var(--hl) 92%,transparent 92%);padding-inline:.12em}
+.sub{color:var(--ink-2)}
+.block{display:flex;flex-direction:column;gap:10px}
+.block > .sub{font-size:.95rem}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ken);outline-offset:2px}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--paper);font-weight:700;padding:14px 18px;border-radius:12px;text-align:center;width:100%}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > .btn{flex:1 1 180px}
+.link{background:none;border:0;padding:6px 0;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+.resume{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+
+.topics{display:flex;flex-direction:column;gap:8px}
+.topic{display:grid;grid-template-columns:26px 1fr auto;column-gap:12px;row-gap:8px;align-items:center;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
+.topic[aria-pressed="true"]{border-color:var(--t)}
+.swatch{width:26px;height:26px;border-radius:7px;border:2px solid var(--t);display:grid;place-items:center;color:var(--card);font-weight:700;font-size:16px;line-height:1}
+.topic[aria-pressed="true"] .swatch{background:var(--t)}
+.tname{font-weight:700;min-width:0}
+.tmeta{display:block;font-weight:400;font-size:.85rem;color:var(--ink-2)}
+.tpct{font-variant-numeric:tabular-nums;font-weight:700;color:var(--t)}
+.meter{grid-column:1 / -1;height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.meter > span{display:block;height:100%;background:var(--t);border-radius:4px}
+
+.foot{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:14px;font-size:.95rem}
+.switch{display:flex;align-items:center;gap:10px;background:none;border:0;padding:6px 0;text-align:left}
+.switch i{width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;flex:none}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--card)}
+.switch[aria-pressed="true"] i{background:var(--ink)}
+.switch[aria-pressed="true"] i::after{left:19px}
+
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.count{font-variant-numeric:tabular-nums;font-weight:700}
+.track{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.track > div{height:100%;background:var(--ink)}
+.qcard{display:flex;flex-direction:column;gap:16px}
+.tag{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.tag .hl{background:color-mix(in srgb,var(--t) 24%,transparent);padding:3px 8px;border-radius:3px}
+.tag .sec{color:var(--ink-2)}
+.q{font-family:var(--display);font-weight:600;font-size:1.5rem;line-height:1.2;text-wrap:balance}
+.opts,.points{display:flex;flex-direction:column;gap:8px;list-style:none;padding:0;margin:0}
+.opt{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:center;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
+.opt b{width:28px;height:28px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;font-size:.85rem;color:var(--ink-2)}
+.opt span{min-width:0}
+.opt.right{background:var(--good-bg);border-color:var(--good)}
+.opt.right b{border-color:var(--good);color:var(--good)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.opt.wrong b{border-color:var(--bad);color:var(--bad)}
+.opt.dim{opacity:.55}
+.opt[disabled]{cursor:default}
+.opt.on{background:var(--good-bg);border-color:var(--good)}
+.opt.on b{background:var(--good);border-color:var(--good);color:var(--card)}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--good)}
+.verdict.no{color:var(--bad)}
+.note{background:var(--card);border-left:5px solid var(--hl);padding:10px 12px;font-size:.95rem}
+.answer{background:var(--card);border:2px solid var(--t);border-radius:12px;padding:14px;font-weight:700}
+.hint{color:var(--ink-2);font-size:.95rem}
+
+.score{font-family:var(--display);font-weight:800;font-size:3.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.split{display:flex;flex-direction:column;gap:6px;list-style:none;padding:0;margin:0}
+.split li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-block:6px}
+.split b{font-variant-numeric:tabular-nums;color:var(--t)}
+.missed{display:flex;flex-direction:column;gap:10px;list-style:none;padding:0;margin:0}
+.missed li{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--t);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.missed .mq{font-weight:700}
+.missed .ma{color:var(--ink-2);font-size:.95rem}
+@media (prefers-reduced-motion:no-preference){
+  .track > div,.meter > span{transition:width .25s ease}
+}
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<script>
+(function(){
+"use strict";
+
+var TOPICS=[
+  {id:"mex",name:"Mexico to USA migration"},
+  {id:"dha",name:"Dharavi"},
+  {id:"ken",name:"Kendal floods"},
+  {id:"abe",name:"Aberfan"},
+  {id:"hai",name:"Typhoon Haiyan"},
+  {id:"tee",name:"River Tees management"},
+  {id:"oth",name:"Other posters (part visible)"}
+];
+
+function m(id,sec,q,a,d,note){return {id:id,t:id.slice(0,3),sec:sec,type:"mc",q:q,a:a,d:d,note:note||""};}
+function r(id,sec,q,p,note){return {id:id,t:id.slice(0,3),sec:sec,type:"rc",q:q,p:p,note:note||""};}
+var EDGE="Rebuilt from a part-hidden poster. Check the wording against the one on the wall.";
+
+var Q=[
+/* Mexico to USA migration */
+m("mex-01","Key facts","What type of migration is Mexico to the USA?","International migration",["Internal migration","Rural to urban migration","Counter-urbanisation"]),
+m("mex-02","Key facts","How are the two countries classed?","USA is an HIC, Mexico is an NEE",["USA is an HIC, Mexico is an LIC","USA is an NEE, Mexico is an LIC","Both are HICs"]),
+m("mex-03","Key facts","What does NEE stand for?","Newly emerging economy",["Newly established economy","Newly expanding economy","Non-European economy"]),
+m("mex-08","Push factors","Push factors come in four types. Which list is right?","Economic, social, environmental, political",["Economic, social, cultural, political","Economic, physical, human, political","Social, cultural, environmental, legal"]),
+r("mex-04","Push factors","Name the three economic push factors.",["Low wages","Unemployment","Limited job opportunities"]),
+r("mex-05","Push factors","Name the social push factors.",["Lower quality education and healthcare","Poor healthcare"]),
+r("mex-06","Push factors","Name the environmental push factors.",["Droughts affect farming","Land degradation makes it difficult to earn a living","Rural poverty"]),
+r("mex-07","Push factors","Name the political push factors.",["Crime and violence","Corruption","Lack of security"]),
+m("mex-13","Push factors","‘Land degradation’ is which type of push factor?","Environmental",["Economic","Social","Political"]),
+m("mex-14","Push factors","‘Corruption and lack of security’ is which type of push factor?","Political",["Economic","Social","Environmental"]),
+r("mex-25","Pull factors","Name the three headings the pull factors are grouped under.",["Economic","Social","Cultural / social"]),
+r("mex-09","Pull factors","Name the three economic pull factors.",["Higher wages","More job opportunities","Higher demand for low skill labour"]),
+r("mex-10","Pull factors","Name the social pull factors.",["Better education and healthcare","Higher standard of living"]),
+r("mex-11","Pull factors","Name the cultural / social pull factors.",["Family already living in the USA (chain migration)","Better infrastructure and services"]),
+m("mex-12","Pull factors","What is chain migration?","People move to join family already living in the USA",["People move in stages from village to town to city","People are moved in groups by employers","People move back and forth with the seasons"]),
+m("mex-15","Pull factors","‘Higher demand for low skill labour’ is which kind of factor?","Pull, economic",["Push, economic","Pull, social","Push, political"]),
+r("mex-16","Impacts","What are the two positive impacts on the USA?",["Provides cheap labour","Fills job gaps"]),
+r("mex-17","Impacts","What are the two negative impacts on the USA?",["Pressure on services (education and healthcare)","Cultural tensions"]),
+m("mex-18","Impacts","What are remittances?","Money sent home by migrants",["Taxes paid by migrants in the USA","Fees paid to cross the border","Government payments to returning migrants"]),
+r("mex-19","Impacts","What is the positive impact on Mexico?",["Remittances (money sent home) boost the economy"]),
+r("mex-20","Impacts","What is the negative impact on Mexico?",["Loss of the young working population"]),
+r("mex-21","Management and response","Name the three management responses to migration.",["Border control (walls, patrols)","Immigration laws","Some legal migration routes"]),
+m("mex-22","Conclusions","Migration is driven mainly by which factors?","Economic",["Political","Environmental","Cultural"]),
+r("mex-23","Conclusions","How successful have attempts to control migration been, and why?",["Limited success","Migration is difficult to stop because the push and pull factors are strong"]),
+r("mex-24","Conclusions","Who benefits from the migration? Give the overall judgement.",["It can benefit both countries","But it creates challenges"]),
+
+/* Dharavi */
+m("dha-01","Key facts","Where is Dharavi?","Mumbai, India",["Delhi, India","Kolkata, India","Dhaka, Bangladesh"],"It is spelt Mumbai. The poster has Mumbia."),
+m("dha-02","Key facts","Roughly how many people live in Dharavi?","About 1 million",["About 100,000","About 5 million","About 10 million"]),
+r("dha-03","Key facts","Give the three opening facts about Dharavi.",["In Mumbai, India","About 1 million people","One of the largest slums in the world"]),
+r("dha-04","Why it developed","Name the four reasons Dharavi developed.",["Rural to urban migration","Lack of affordable housing","Rapid urbanisation","Poverty"]),
+r("dha-05","Why it developed","Why does rural to urban migration lead to slums like Dharavi?",["People move to Mumbai for jobs and better opportunities"]),
+r("dha-06","Why it developed","What does the lack of affordable housing force people to do?",["Build makeshift houses"]),
+r("dha-07","Why it developed","What is the problem with rapid urbanisation?",["The city grows faster than its infrastructure"]),
+r("dha-08","Why it developed","How does poverty contribute?",["People can’t afford basic services"]),
+m("dha-09","Why it developed","Complete it: slums develop due to urban growth and…","Inequality",["Climate change","Deindustrialisation","Counter-urbanisation"]),
+r("dha-22","Characteristics","Name the four headings used for Dharavi\u2019s characteristics.",["Housing","Infrastructure","Environment","Employment"]),
+r("dha-10","Characteristics","Describe the housing in Dharavi.",["Small","Overcrowded","Often made of scrap materials like plastic sheets"]),
+r("dha-11","Characteristics","Describe the infrastructure.",["Limited clean water","Poor sanitation"]),
+r("dha-12","Characteristics","Describe the environment.",["Pollution","Waste"]),
+m("dha-13","Characteristics","Many people in Dharavi work in the…","Informal economy",["Formal economy","Public sector","Tourism industry"]),
+r("dha-14","Characteristics","Name the three industries in Dharavi.",["Recycling","Pottery","Textiles"]),
+m("dha-15","Characteristics","How much does Dharavi generate each year?","Millions of dollars",["Thousands of dollars","Hundreds of dollars","Nothing, it has no businesses"]),
+r("dha-16","Impacts","Name the four negative impacts.",["Higher risk of disease","Overcrowding","Fire risk","Pollution"]),
+r("dha-17","Impacts","Name the three positives.",["Provides cheap labour","Close access to the city","Strong community network"]),
+r("dha-18","Management","Name the three ways Dharavi is managed or improved.",["Government redevelopment plans","NGOs and community action","Self-help schemes"]),
+r("dha-19","Management","What do the government redevelopment plans involve?",["Replacing slums with apartments"]),
+r("dha-20","Management","What do NGOs and community action improve?",["Sanitation","Water supply"]),
+r("dha-21","Management","What are self-help schemes?",["Residents improve their own homes"]),
+
+/* Kendal floods */
+m("ken-01","Key facts","Which storm caused the Kendal floods?","Storm Desmond",["Storm Arwen","Storm Ciara","Storm Eva"]),
+m("ken-02","Key facts","Which county is Kendal in?","Cumbria",["Lancashire","North Yorkshire","Northumberland"]),
+m("ken-03","Key facts","Which river flooded?","River Kent",["River Eden","River Derwent","River Lune"]),
+m("ken-04","Key facts","When did it happen?","5 to 6 December 2015",["5 to 6 December 2013","5 to 6 November 2015","25 to 26 December 2015"]),
+m("ken-05","Key facts","How much rain fell?","341mm in 24 hours",["141mm in 24 hours","241mm in 24 hours","341mm in a week"]),
+m("ken-06","Key facts","What was significant about that rainfall total?","It was a record at the time",["It was average for December","It was half the previous record","It fell over a whole month"]),
+m("ken-07","Physical causes","Were physical or human factors the main cause?","Physical",["Human","Both equally"]),
+r("ken-08","Physical causes","Name the four physical causes.",["Extreme rainfall","Relief (steep slopes)","Geology (impermeable rock)","Saturated ground"]),
+r("ken-09","Physical causes","Explain how the extreme rainfall caused flooding.",["A low pressure system brought prolonged, intense rainfall","Rapid increase in discharge"]),
+r("ken-10","Physical causes","Explain how relief made the flooding worse.",["The Lake District is a steep upland landscape","Water flows quickly down the slopes"]),
+m("ken-11","Physical causes","What type of rock is the area made of?","Slate",["Limestone","Chalk","Sandstone"]),
+r("ken-12","Physical causes","Explain how the geology made the flooding worse.",["Slate is impermeable, so water can’t infiltrate","Even more runoff"]),
+r("ken-13","Physical causes","Explain the role of saturated ground.",["Previous rain meant the soil was already full","No further saturation could occur"]),
+r("ken-14","Physical causes","What did the physical factors do to lag time and peak discharge?",["Short lag time","Very high peak discharge"]),
+r("ken-15","Human causes","Name the three human causes.",["Urbanisation","Building on floodplains","Drainage systems overwhelmed"]),
+r("ken-16","Human causes","Explain how urbanisation made the flooding worse.",["Roads and buildings mean more impermeable surfaces","More surface runoff"]),
+r("ken-17","Human causes","Why does building on floodplains matter?",["More people and property are exposed"]),
+m("ken-18","Impacts","How many homes were flooded?","More than 2,000",["More than 200","More than 500","More than 20,000"]),
+m("ken-19","Impacts","How many people lost power?","About 6,000 or more",["About 600 or more","About 16,000 or more","About 60,000 or more"]),
+r("ken-20","Impacts","Name the three social impacts.",["2,000+ homes flooded","About 6,000+ people lost power","Evacuations"]),
+m("ken-21","Impacts","How much damage was caused?","More than £500 million",["More than £5 million","More than £50 million","More than £5 billion"]),
+r("ken-22","Impacts","Name the economic impacts.",["£500 million+ damage","Businesses and factories closed","Loss of income and jobs"]),
+r("ken-23","Impacts","Name the environmental impacts.",["Water pollution (sewage and debris)","Farmland damaged (saturated)"]),
+r("ken-24","Responses","Name the three immediate responses.",["Rescue by the emergency services and army","Temporary shelters","Sandbags"]),
+r("ken-25","Responses","Give the long-term hard engineering responses.",["Flood walls","Embankments","River management"]),
+r("ken-26","Responses","Give the long-term soft engineering responses.",["Better warning systems","Land-use planning","Afforestation upstream"]),
+m("ken-27","Responses","‘Afforestation upstream’ is which kind of response?","Long-term, soft engineering",["Long-term, hard engineering","Immediate, soft engineering","Immediate, hard engineering"]),
+r("ken-28","Conclusion","Give the overall conclusion in three parts.",["Mainly caused by extreme physical factors","Human activity significantly increased the impacts","Future risk may rise due to climate change"]),
+
+/* Aberfan */
+m("abe-01","Key facts","When was the Aberfan disaster?","21 October 1966",["21 November 1966","21 October 1956","21 October 1976"],"The poster says November. The disaster was on 21 October 1966."),
+m("abe-02","Key facts","What type of event was it?","Mass movement",["River flood","Earthquake","Coastal erosion"]),
+m("abe-03","Key facts","Where is Aberfan?","South Wales",["North Wales","Cumbria","Cornwall"]),
+m("abe-04","Key facts","What collapsed?","A coal spoil tip",["A dam","A quarry wall","A mine shaft"]),
+m("abe-05","Key facts","How many people died?","144",["44","116","244"]),
+m("abe-06","Key facts","How many of those who died were children?","116",["16","66","144"]),
+r("abe-07","Key facts","Give the five headline facts.",["21 October 1966","Aberfan, South Wales","Collapse of a coal spoil tip","144 deaths, 116 of them children","School destroyed"]),
+r("abe-08","Physical causes","Name the three physical causes.",["Heavy rainfall","Steep valley slopes","Water build up"]),
+r("abe-09","Physical causes","Explain how heavy rainfall contributed.",["Prolonged rain saturated the spoil tip","Increased weight and instability"]),
+r("abe-10","Physical causes","Explain how the steep valley slopes contributed.",["The tip was on a hillside above the village","Gravity increased movement"]),
+r("abe-11","Physical causes","Explain the water build up.",["Underground springs were present","Water collected inside the tip"]),
+r("abe-12","Human causes","Name the three human causes.",["Poor site choice","Lack of management","Ignored warnings"]),
+r("abe-13","Human causes","What was wrong with the site choice?",["The spoil tip was built above the school and village"]),
+r("abe-14","Human causes","What does ‘lack of management’ mean here?",["No monitoring of the tip’s stability"]),
+r("abe-15","Human causes","What warnings were ignored?",["Previous small slides had been reported","Risks were known but ignored"]),
+m("abe-16","Human causes","Which was the main cause?","Human misjudgement, with rainfall as the trigger",["Heavy rainfall, with human error as the trigger","Steep slopes alone","Underground springs alone"]),
+r("abe-17","Impacts","Name the three social impacts.",["144 deaths","School destroyed","Community trauma"]),
+r("abe-18","Impacts","Name the economic impacts.",["Cost of damage and compensation","Long-term decline in the area"]),
+r("abe-19","Impacts","Name the environmental impacts.",["Debris","Village covered in mud"]),
+r("abe-20","Responses","Name the immediate responses.",["Rescue efforts by locals and emergency services","Bodies recovered from the debris"]),
+r("abe-21","Responses","Name the three long-term responses.",["Legal changes","Monitoring","Compensation"]),
+r("abe-22","Responses","What did each long-term response involve?",["Legal changes: stricter regulations on spoil tips","Monitoring: better inspection of mining waste","Compensation: payments to families"]),
+r("abe-23","Conclusion","Give the overall conclusion in three parts.",["Mainly caused by human mismanagement","Natural factors acted as a trigger","Largely preventable"]),
+
+/* Typhoon Haiyan */
+m("hai-01","Key facts","When did Typhoon Haiyan hit?","November 2013",["November 2011","December 2013","November 2015"]),
+m("hai-02","Key facts","Which country did it hit?","Philippines",["Vietnam","Indonesia","Bangladesh"]),
+m("hai-29","Key facts","Which region of the world is the Philippines in?","South East Asia",["South Asia","East Africa","Central America"]),
+m("hai-03","Key facts","Which place was worst hit?","Tacloban, on Leyte island",["Manila, on Luzon island","Cebu City, on Cebu island","Davao, on Mindanao island"]),
+m("hai-04","Key facts","What type of storm was it?","Category 5 tropical cyclone",["Category 3 tropical cyclone","Category 4 tropical cyclone","Category 5 tornado"]),
+r("hai-05","Physical causes","Name the six physical causes.",["Warm ocean water","Low pressure system","Coriolis effect","Extreme wind speeds","Storm surge","Heavy rainfall"]),
+m("hai-06","Physical causes","The sea temperature was above…","27°C",["17°C","22°C","37°C"]),
+r("hai-07","Physical causes","Why does warm ocean water matter?",["It provides energy","The storm intensifies"]),
+r("hai-08","Physical causes","Explain the low pressure system.",["Rising air creates very low pressure","Air rushes in, causing strong winds"]),
+r("hai-09","Physical causes","What is the Coriolis effect and what does it do?",["The force from the Earth’s rotation","Causes the storm to spin and organise"]),
+m("hai-10","Physical causes","Wind speeds reached up to…","315 km/h",["115 km/h","215 km/h","415 km/h"]),
+r("hai-11","Physical causes","What did the extreme winds cause?",["Structural damage"]),
+m("hai-12","Physical causes","How high was the storm surge?","5 to 6 metres",["1 to 2 metres","2 to 3 metres","10 to 12 metres"]),
+r("hai-13","Physical causes","Describe the storm surge and why it matters.",["A coastal flood: seawater pushed onto the land","Major cause of deaths"],"The poster says coastal flood / tsunami. A storm surge is pushed up by the storm\u2019s winds and low pressure. A tsunami comes from an earthquake, so don\u2019t call the surge a tsunami in the exam."),
+r("hai-14","Physical causes","What did the heavy rainfall lead to?",["Flooding inland"]),
+r("hai-15","Human causes","Name the three human causes.",["Coastal population (close to the sea)","Poverty (LIC/NEE)","Limited preparedness"]),
+r("hai-16","Human causes","How did poverty make the impacts worse?",["Weak housing in informal settlements","Easily destroyed"]),
+m("hai-17","Impacts","How many people died?","About 6,300",["About 630","About 3,600","About 63,000"]),
+m("hai-18","Impacts","How many people were displaced?","About 4 million",["About 400,000","About 1 million","About 14 million"]),
+m("hai-19","Impacts","How many people were affected?","About 14 million",["About 1.4 million","About 4 million","About 40 million"]),
+r("hai-20","Impacts","Give the three social impacts with their numbers.",["About 6,300 deaths","About 4 million displaced","About 14 million affected"]),
+m("hai-21","Impacts","How much damage was caused?","$5 to 6 billion",["$5 to 6 million","$50 to 60 million","$50 to 60 billion"]),
+r("hai-22","Impacts","Name the economic impacts.",["$5 to 6 billion damage","Fishing and farming livelihoods destroyed"]),
+r("hai-23","Impacts","Name the environmental impacts.",["Coastal ecosystems damaged","Debris and flooding"]),
+r("hai-24","Responses","Name the three immediate responses.",["International aid (UN, NGOs, governments)","Food, water and medical support","Search and rescue"]),
+r("hai-25","Responses","Why was the immediate response slow?",["Infrastructure was damaged"]),
+r("hai-26","Responses","Name the four long-term responses.",["Rebuilding","Planning","Protection","Technology"]),
+r("hai-27","Responses","What did each long-term response involve?",["Rebuilding: ‘Build back better’ homes","Planning: no-build coastal zones","Protection: more storm shelters","Technology: improved warning systems"]),
+r("hai-28","Evaluation","Give the three evaluation points.",["Aid was essential but initially delayed","Long-term responses improved resilience","The country is still vulnerable due to its development level"]),
+
+/* River Tees management */
+m("tee-01","Key facts","Where is the River Tees?","North East England",["North West England","South Wales","East Anglia"]),
+m("tee-02","Key facts","Where is its source?","The Pennines",["The Lake District","The Cheviots","The North York Moors"]),
+m("tee-03","Key facts","Where is its mouth?","The North Sea",["The Irish Sea","The English Channel","The Humber"]),
+r("tee-04","Key facts","What kinds of area does it flow through?",["Rural areas, then industrial areas","For example Stockton"]),
+r("tee-05","Why manage it","Give the two reasons management is needed.",["Flood risk","Erosion risk"]),
+r("tee-06","Why manage it","Explain the flood risk.",["Heavy rainfall increases river discharge","Urban areas downstream are at risk"]),
+r("tee-07","Why manage it","Explain the erosion risk.",["Meanders and lateral erosion","In the middle and lower course of the river"]),
+m("tee-08","Why manage it","Complete it: different parts of the river need…","Different management strategies",["The same management strategy","Only hard engineering","Only soft engineering"]),
+r("tee-09","Hard engineering","Name the three hard engineering strategies.",["Tees Barrage","Channel straightening","Embankments"]),
+m("tee-10","Hard engineering","Where is the Tees Barrage?","Stockton",["Middlesbrough","Darlington","Yarm"]),
+r("tee-11","Hard engineering","What is the Tees Barrage and what does it do?",["A barrier built across the river","Reduces water levels, which reduces flooding"]),
+r("tee-12","Hard engineering","How does channel straightening work?",["Removes meanders","Increases velocity, so water moves away faster"]),
+r("tee-13","Hard engineering","What are embankments and what do they do?",["Raised river banks","Increase channel capacity"]),
+m("tee-18","Hard engineering","Channel straightening is…","Hard engineering",["Soft engineering"]),
+r("tee-14","Soft engineering","Name the three soft engineering strategies.",["Afforestation","Flood zoning","River restoration"]),
+r("tee-15","Soft engineering","How does afforestation reduce flooding?",["Planting trees","More interception, which reduces runoff","Plant uptake of water"]),
+r("tee-16","Soft engineering","What does flood zoning do?",["Limits building in high risk areas","Reduces damage"]),
+r("tee-17","Soft engineering","What is river restoration?",["Allows the river to go back to its natural course"]),
+m("tee-19","Soft engineering","Flood zoning is…","Soft engineering",["Hard engineering"]),
+r("tee-20","Impacts of management","Name the three benefits of flood management.",["Reduced flood risk","Protects settlements and industry","Economic benefits"]),
+r("tee-21","Impacts of management","Name the three costs or problems.",["Expensive","Can cause more flooding downstream","Environmental damage"]),
+r("tee-22","Conclusion","Give the overall judgement on hard engineering.",["Effective","But expensive","Can cause knock-on effects"]),
+
+/* Rebuilt from the edges of three other posters: every visible fragment */
+m("oth-01","River flow (pink poster)","Water moving in parallel layers is which type of flow?","Laminar flow",["Turbulent flow","Base flow","Throughflow"],EDGE),
+r("oth-06","River flow (pink poster)","Describe laminar flow.",["Water moves in parallel layers","Found in smooth channels (the photo only shows the word channels)"],EDGE),
+m("oth-02","River flow (pink poster)","Eddies and swirling water describe which type of flow?","Turbulent flow",["Laminar flow","Base flow","Throughflow"],EDGE),
+r("oth-03","River flow (pink poster)","Where is turbulent flow found, and what causes it?",["In the upper course","Friction"],EDGE),
+r("oth-07","River flow (pink poster)","The last definition on the pink poster ends \u2018of water a river channel\u2019. Say the term and the whole definition.",["Only the end of the line shows in the photo. It is most likely discharge (the volume of water flowing in a river channel) or capacity (the amount of water a river channel can hold). Check the poster."],EDGE),
+r("oth-04","Rainfall (blue poster)","Describe how convectional rainfall forms.",["The sun heats the Earth\u2019s surface","Warm air rises (convection)","The air cools and condenses, so clouds form"],EDGE),
+r("oth-05","Poster above Mexico to USA","What are the environmental benefits on the poster above Mexico to USA?",["Less pollution","Less resource use"]),
+r("oth-08","Poster above Mexico to USA","That poster has two more highlighted points. What are they?",["A point ending in the word resources (the start is cut off in the photo)","Human rights issues"],EDGE)
+];
+
+var byId={}, topicById={};
+Q.forEach(function(q){byId[q.id]=q;});
+TOPICS.forEach(function(t){topicById[t.id]=t;});
+var WEAK_SIZE=20, WEAK_MIN=5;
+
+function load(k,f){try{var v=localStorage.getItem(k);return v?JSON.parse(v):f;}catch(e){return f;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function drop(k){try{localStorage.removeItem(k);}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}return a;}
+
+var stats=load("gq.stats",{});
+var prefs=load("gq.prefs",{shuffle:true,sel:[]});
+if(!prefs||typeof prefs!=="object")prefs={shuffle:true,sel:[]};
+if(!Array.isArray(prefs.sel))prefs.sel=[];
+var sess=load("gq.session",null);
+if(sess&&(!Array.isArray(sess.ids)||!sess.ids.every(function(id){return byId[id];})||sess.i>=sess.ids.length))sess=null;
+
+var view="home", cur=null, last=null, askReset=false;
+var app=document.getElementById("app");
+
+function known(list){var s=0;list.forEach(function(q){if(stats[q.id])s+=stats[q.id].s;});return list.length?Math.round(100*s/list.length):0;}
+function answered(list){return list.filter(function(q){return stats[q.id];}).length;}
+function weakest(){
+  var a=Q.filter(function(q){return stats[q.id];});
+  a.sort(function(x,y){var sx=stats[x.id],sy=stats[y.id];return (sx.s-sy.s)||(sx.t-sy.t);});
+  return a.slice(0,WEAK_SIZE).map(function(q){return q.id;});
+}
+function order(ids){return prefs.shuffle?shuffle(ids):ids;}
+
+function start(label,ids){
+  if(!ids.length)return;
+  sess={label:label,ids:ids,i:0,res:{}};save("gq.session",sess);nextQ();
+}
+function nextQ(){
+  if(!sess){view="home";render();return;}
+  if(sess.i>=sess.ids.length){finish();return;}
+  var q=byId[sess.ids[sess.i]];
+  cur={q:q,pos:sess.i,done:false,
+       opts:q.type==="mc"?shuffle([q.a].concat(q.d)):null,picked:null,
+       shown:false,ticks:q.type==="rc"?q.p.map(function(){return false;}):null};
+  view="quiz";render();window.scrollTo(0,0);
+}
+function record(score){
+  var id=cur.q.id,st=stats[id]||{n:0,s:0};
+  st.s=st.n?(st.s+score)/2:score;st.n+=1;st.t=Date.now();
+  stats[id]=st;save("gq.stats",stats);
+  sess.res[id]=score;sess.i=cur.pos+1;save("gq.session",sess);cur.done=true;
+}
+function finish(){last=sess;sess=null;drop("gq.session");view="done";render();window.scrollTo(0,0);}
+
+function renderHome(){
+  var total=Q.length,ans=answered(Q),weakN=Math.min(WEAK_SIZE,ans);
+  var selIds=Q.filter(function(q){return prefs.sel.indexOf(q.t)>-1;}).map(function(q){return q.id;});
+  var h='<header class="block"><h1><span class="mark">Case study quiz</span></h1>'+
+    '<p class="sub">'+total+' questions from your posters. '+ans+' answered so far, '+known(Q)+'% known.</p></header>';
+  if(sess){
+    h+='<section class="resume"><h2>'+esc(sess.label)+', in progress</h2>'+
+      '<p class="sub">You’re on question '+(sess.i+1)+' of '+sess.ids.length+'.</p>'+
+      '<button class="btn" data-act="resume">Carry on</button></section>';
+  }
+  h+='<section class="block"><h2>Everything</h2>'+
+    '<p class="sub">Every point on the six full posters, plus what could be read of three more. Stop whenever you like and it keeps your place.</p>'+
+    '<button class="btn'+(sess?' ghost':'')+'" data-act="all">Start all '+total+' questions</button></section>';
+  h+='<section class="block"><h2>By case study</h2><p class="sub">Tick one or more. The bar shows how much of each you know.</p><div class="topics">';
+  TOPICS.forEach(function(t){
+    var list=Q.filter(function(q){return q.t===t.id;}),on=prefs.sel.indexOf(t.id)>-1,k=known(list);
+    h+='<button class="topic" data-act="topic" data-id="'+t.id+'" aria-pressed="'+on+'" style="--t:var(--'+t.id+')">'+
+      '<span class="swatch" aria-hidden="true">'+(on?'✓':'')+'</span>'+
+      '<span class="tname">'+esc(t.name)+'<span class="tmeta">'+list.length+' questions, '+answered(list)+' answered</span></span>'+
+      '<span class="tpct">'+k+'%</span>'+
+      '<span class="meter"><span style="width:'+k+'%"></span></span></button>';
+  });
+  h+='</div><button class="btn ghost" data-act="topics"'+(selIds.length?'':' disabled')+'>'+
+    (selIds.length?'Start '+selIds.length+' questions':'Pick a case study')+'</button></section>';
+  h+='<section class="block"><h2>Least well known</h2>';
+  if(ans>=WEAK_MIN){
+    h+='<p class="sub">Your '+weakN+' lowest scoring questions, worked out from your answers. It updates every time you answer.</p>'+
+      '<button class="btn ghost" data-act="weak">Start my weakest '+weakN+'</button>';
+  }else{
+    h+='<p class="sub">This builds itself from your answers. Answer at least '+WEAK_MIN+' questions and it unlocks.</p>'+
+      '<button class="btn ghost" disabled>Not enough answers yet</button>';
+  }
+  h+='</section>';
+  h+='<footer class="foot"><button class="switch" data-act="shuffle" aria-pressed="'+!!prefs.shuffle+'"><i aria-hidden="true"></i><span>Mix up the question order</span></button>';
+  if(askReset){
+    h+='<p>Clear every score and start from zero?</p><div class="row"><button class="btn ghost" data-act="reset-yes">Yes, clear scores</button><button class="btn" data-act="reset-no">Keep them</button></div>';
+  }else if(ans){
+    h+='<button class="link" data-act="reset" style="align-self:flex-start">Reset my scores</button>';
+  }
+  h+='<p class="sub">Scores are saved on this device only.</p></footer>';
+  app.innerHTML=h;
+}
+
+function renderQuiz(){
+  var q=cur.q,t=topicById[q.t],n=sess?sess.ids.length:0,pos=cur.pos,L="ABCD";
+  var h='<div class="bar"><button class="link" data-act="exit">Save and exit</button><span class="count">'+(pos+1)+' / '+n+'</span></div>'+
+    '<div class="track"><div style="width:'+Math.round(100*(pos+(cur.done?1:0))/n)+'%"></div></div>'+
+    '<article class="qcard" style="--t:var(--'+q.t+')">'+
+    '<p class="tag"><span class="hl">'+esc(t.name)+'</span><span class="sec">'+esc(q.sec)+'</span></p>'+
+    '<h2 class="q">'+esc(q.q)+'</h2>';
+  if(q.type==="mc"){
+    h+='<div class="opts">';
+    cur.opts.forEach(function(o,i){
+      var cls="opt";
+      if(cur.picked!==null){
+        if(o===q.a)cls+=" right";else if(i===cur.picked)cls+=" wrong";else cls+=" dim";
+      }
+      h+='<button class="'+cls+'" data-act="pick" data-i="'+i+'"'+(cur.picked!==null?' disabled':'')+'><b>'+L[i]+'</b><span>'+esc(o)+'</span></button>';
+    });
+    h+='</div>';
+    if(cur.picked!==null){
+      var ok=cur.opts[cur.picked]===q.a;
+      h+='<p class="verdict '+(ok?'ok':'no')+'">'+(ok?'Correct.':'Not this time. The answer is '+esc(q.a)+'.')+'</p>';
+      if(q.note)h+='<p class="note">'+esc(q.note)+'</p>';
+      h+='<button class="btn" data-act="next" data-focus>'+(pos+1>=n?'Finish':'Next')+'</button>';
+    }
+  }else if(!cur.shown){
+    h+='<p class="hint">'+(q.p.length>1?q.p.length+' points to recall. ':'')+'Say it out loud, then check.</p>'+
+      '<button class="btn" data-act="show" data-focus>Show answer</button>';
+  }else if(q.p.length===1){
+    h+='<p class="answer">'+esc(q.p[0])+'</p>'+(q.note?'<p class="note">'+esc(q.note)+'</p>':'')+
+      '<div class="row"><button class="btn" data-act="got" data-focus>Got it</button><button class="btn ghost" data-act="missed">Missed it</button></div>';
+  }else{
+    var got=cur.ticks.filter(Boolean).length;
+    h+='<p class="hint">Tick the ones you got.</p><div class="points">';
+    q.p.forEach(function(p,i){
+      h+='<button class="opt'+(cur.ticks[i]?' on':'')+'" data-act="tick" data-i="'+i+'" aria-pressed="'+cur.ticks[i]+'"><b>'+(cur.ticks[i]?'✓':(i+1))+'</b><span>'+esc(p)+'</span></button>';
+    });
+    h+='</div>'+(q.note?'<p class="note">'+esc(q.note)+'</p>':'')+'<div class="row"><button class="btn" data-act="next" data-focus>'+(pos+1>=n?'Finish':'Next')+' ('+got+' of '+q.p.length+')</button>'+
+      '<button class="btn ghost" data-act="gotall">Got them all</button></div>';
+  }
+  h+='</article>';
+  app.innerHTML=h;
+}
+
+function renderDone(){
+  var ids=last.ids,sum=0,missed=[];
+  ids.forEach(function(id){var s=last.res[id]||0;sum+=s;if(s<1)missed.push(id);});
+  var pct=Math.round(100*sum/ids.length),full=ids.length-missed.length;
+  var h='<header class="block"><h1><span class="mark">'+esc(last.label)+', done</span></h1>'+
+    '<p class="score">'+pct+'%</p>'+
+    '<p class="sub">'+full+' of '+ids.length+' questions fully right.</p></header>';
+  var seen=TOPICS.filter(function(t){return ids.some(function(id){return byId[id].t===t.id;});});
+  if(seen.length>1){
+    h+='<section class="block"><h2>By case study</h2><ul class="split">';
+    seen.forEach(function(t){
+      var l=ids.filter(function(id){return byId[id].t===t.id;}),s=0;
+      l.forEach(function(id){s+=last.res[id]||0;});
+      h+='<li style="--t:var(--'+t.id+')"><span>'+esc(t.name)+'</span><b>'+Math.round(100*s/l.length)+'%</b></li>';
+    });
+    h+='</ul></section>';
+  }
+  h+='<div class="row">';
+  if(missed.length)h+='<button class="btn" data-act="retry" data-focus>Go again on the '+missed.length+' I missed</button>';
+  h+='<button class="btn'+(missed.length?' ghost':'')+'" data-act="home"'+(missed.length?'':' data-focus')+'>Back to the start</button></div>';
+  if(missed.length){
+    h+='<section class="block"><h2>To go over</h2><ul class="missed">';
+    missed.forEach(function(id){
+      var q=byId[id];
+      h+='<li style="--t:var(--'+q.t+')"><span class="mq">'+esc(q.q)+'</span><span class="ma">'+esc(q.type==="mc"?q.a:q.p.join("; "))+'</span></li>';
+    });
+    h+='</ul></section>';
+  }
+  app.innerHTML=h;
+}
+
+function render(){
+  if(view==="quiz"&&cur)renderQuiz();
+  else if(view==="done"&&last)renderDone();
+  else{view="home";renderHome();}
+  var f=app.querySelector("[data-focus]");
+  if(f){try{f.focus({preventScroll:true});}catch(e){}}
+}
+
+function act(a,el){
+  var i=el?parseInt(el.getAttribute("data-i"),10):-1;
+  switch(a){
+    case "all":start("Everything",order(Q.map(function(q){return q.id;})));break;
+    case "topic":
+      var id=el.getAttribute("data-id"),k=prefs.sel.indexOf(id);
+      if(k>-1)prefs.sel.splice(k,1);else prefs.sel.push(id);
+      save("gq.prefs",prefs);render();break;
+    case "topics":
+      var names=TOPICS.filter(function(t){return prefs.sel.indexOf(t.id)>-1;}).map(function(t){return t.name;});
+      start(names.length===1?names[0]:names.length+" case studies",order(Q.filter(function(q){return prefs.sel.indexOf(q.t)>-1;}).map(function(q){return q.id;})));break;
+    case "weak":start("Least well known",weakest());break;
+    case "resume":nextQ();break;
+    case "exit":view="home";cur=null;render();window.scrollTo(0,0);break;
+    case "pick":
+      if(cur.picked!==null)break;
+      cur.picked=i;record(cur.opts[i]===cur.q.a?1:0);render();break;
+    case "show":cur.shown=true;render();break;
+    case "got":record(1);nextQ();break;
+    case "missed":record(0);nextQ();break;
+    case "tick":cur.ticks[i]=!cur.ticks[i];render();break;
+    case "gotall":record(1);nextQ();break;
+    case "next":
+      if(cur.q.type==="rc"&&!cur.done)record(cur.ticks.filter(Boolean).length/cur.q.p.length);
+      nextQ();break;
+    case "retry":
+      start("Missed questions",last.ids.filter(function(id){return (last.res[id]||0)<1;}));break;
+    case "home":view="home";last=null;render();window.scrollTo(0,0);break;
+    case "shuffle":prefs.shuffle=!prefs.shuffle;save("gq.prefs",prefs);render();break;
+    case "reset":askReset=true;render();break;
+    case "reset-no":askReset=false;render();break;
+    case "reset-yes":stats={};sess=null;askReset=false;drop("gq.stats");drop("gq.session");render();break;
+  }
+}
+
+app.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");
+  if(!el||el.disabled)return;
+  act(el.getAttribute("data-act"),el);
+});
+
+document.addEventListener("keydown",function(e){
+  if(view!=="quiz"||!cur||e.metaKey||e.ctrlKey||e.altKey)return;
+  var k=e.key.toLowerCase(),n="1234567890".indexOf(k),l="abcd".indexOf(k);
+  if(cur.q.type==="mc"&&cur.picked===null){
+    var idx=l>-1?l:n;
+    if(idx>-1&&idx<cur.opts.length){e.preventDefault();act("pick",app.querySelectorAll('[data-act="pick"]')[idx]);}
+  }else if(cur.q.type==="rc"&&cur.shown&&cur.q.p.length>1&&n>-1&&n<cur.q.p.length){
+    e.preventDefault();act("tick",app.querySelectorAll('[data-act="tick"]')[n]);
+  }
+});
+
+render();
+})();
+</script>
+</body>
+</html>
