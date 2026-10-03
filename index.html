@@ -90,6 +90,13 @@ button:focus-visible{outline:3px solid var(--ken);outline-offset:2px}
 .opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
 .opt.wrong b{border-color:var(--bad);color:var(--bad)}
 .opt.dim{opacity:.55}
+.opt.sel{border-color:var(--ink)}
+.opt.sel b{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.opt.miss{border-style:dashed;border-color:var(--good)}
+.opt.miss b{border-color:var(--good);color:var(--good)}
+.tagm{display:block;font-style:normal;font-size:.8rem;font-weight:700;margin-top:2px}
+.opt.miss .tagm{color:var(--good)}
+.opt.wrong .tagm{color:var(--bad)}
 .opt[disabled]{cursor:default}
 .opt.on{background:var(--good-bg);border-color:var(--good)}
 .opt.on b{background:var(--good);border-color:var(--good);color:var(--card)}
@@ -301,7 +308,7 @@ m("oth-01","River flow (pink poster)","Water moving in parallel layers is which 
 r("oth-06","River flow (pink poster)","Describe laminar flow.",["Water moves in parallel layers","Found in smooth channels (the photo only shows the word channels)"],EDGE),
 m("oth-02","River flow (pink poster)","Eddies and swirling water describe which type of flow?","Turbulent flow",["Laminar flow","Base flow","Throughflow"],EDGE),
 r("oth-03","River flow (pink poster)","Where is turbulent flow found, and what causes it?",["In the upper course","Friction"],EDGE),
-r("oth-07","River flow (pink poster)","The last definition on the pink poster ends \u2018of water a river channel\u2019. Say the term and the whole definition.",["Only the end of the line shows in the photo. It is most likely discharge (the volume of water flowing in a river channel) or capacity (the amount of water a river channel can hold). Check the poster."],EDGE),
+r("oth-07","River flow (pink poster)","The last definition on the pink poster ends \u2018of water a river channel\u2019. Which two terms could it be defining?",["Discharge: the volume of water flowing in a river channel","Capacity: the amount of water a river channel can hold"],"Only the end of this line shows in the photo, so check the poster for which term it is."),
 r("oth-04","Rainfall (blue poster)","Describe how convectional rainfall forms.",["The sun heats the Earth\u2019s surface","Warm air rises (convection)","The air cools and condenses, so clouds form"],EDGE),
 r("oth-05","Poster above Mexico to USA","What are the environmental benefits on the poster above Mexico to USA?",["Less pollution","Less resource use"]),
 r("oth-08","Poster above Mexico to USA","That poster has two more highlighted points. What are they?",["A point ending in the word resources (the start is cut off in the photo)","Human rights issues"],EDGE)
@@ -309,6 +316,13 @@ r("oth-08","Poster above Mexico to USA","That poster has two more highlighted po
 
 var byId={}, topicById={};
 Q.forEach(function(q){byId[q.id]=q;});
+var X={"mex-04": ["Poor healthcare", "Crime and violence", "Higher wages"], "mex-05": ["Low wages", "Droughts affect farming", "Better education and healthcare"], "mex-06": ["Limited job opportunities", "Corruption and lack of security", "Better infrastructure and services"], "mex-07": ["Low wages", "Poor healthcare", "Cultural tensions"], "mex-25": ["Environmental", "Political", "Physical"], "mex-09": ["Unemployment", "Better education and healthcare", "Family already living in the USA"], "mex-10": ["Higher wages", "Lower quality education and healthcare", "Higher demand for low skill labour"], "mex-11": ["Higher wages", "Cultural tensions", "Lack of security"], "mex-16": ["Remittances (money sent home) boost the economy", "Pressure on services (education and healthcare)", "Loss of the young working population"], "mex-17": ["Loss of the young working population", "Fills job gaps", "Remittances (money sent home) boost the economy"], "mex-19": ["Migrants provide cheap labour and fill job gaps", "Loss of the young working population", "Pressure on services (education and healthcare)"], "mex-20": ["Pressure on services (education and healthcare)", "Cultural tensions", "Remittances (money sent home) boost the economy"], "mex-21": ["Chain migration", "Remittances (money sent home)", "Self-help schemes"], "mex-23": ["Complete success", "Migration has stopped because of border control", "The push and pull factors are weak"], "mex-24": ["It only benefits the USA", "It only benefits Mexico", "It benefits neither country"], "dha-03": ["In Delhi, India", "About 10 million people", "About 100,000 people"], "dha-04": ["Counter-urbanisation", "Government redevelopment plans"], "dha-05": ["People move out of Mumbai to the countryside", "The government moves people into new apartments", "People move abroad to find higher wages"], "dha-06": ["Move into new apartments", "Buy homes in the suburbs", "Rent flats in the city centre"], "dha-07": ["People move out of the city to rural areas", "Industries close and the city shrinks", "Slums are replaced with apartments"], "dha-08": ["The city grows faster than its infrastructure", "People move away from the city", "The government replaces slums with apartments"], "dha-22": ["Education", "Geology"], "dha-10": ["Spacious", "Spread far apart", "Often built to strict fire safety rules"], "dha-11": ["Small, overcrowded houses", "Recycling, pottery and textiles", "Strong community network"], "dha-12": ["Informal economy", "Small houses", "Close access to the city"], "dha-14": ["Coal mining", "Farming", "Car manufacturing"], "dha-16": ["Strong community network", "Close access to the city"], "dha-17": ["Fire risk", "Higher risk of disease", "Overcrowding"], "dha-18": ["Immigration laws", "Flood zoning", "Rural to urban migration"], "dha-19": ["Residents improve their own homes", "People build makeshift houses", "NGOs lead community action"], "dha-20": ["Flood defences", "Storm shelters", "Border control"], "dha-21": ["The government replaces slums with apartments", "NGOs improve sanitation and water supply", "Migrants send money home to their families"], "ken-08": ["Urbanisation", "Building on floodplains"], "ken-09": ["A storm surge pushed seawater onto the land", "Slate is impermeable, so water can’t infiltrate", "Roads and buildings mean more impermeable surfaces"], "ken-10": ["Slate is impermeable, so water can’t infiltrate", "Previous rain meant the soil was already full", "The land is flat, so water drains away slowly"], "ken-12": ["Limestone is permeable, so water soaks in", "More infiltration", "The Lake District is a steep upland landscape"], "ken-13": ["The dry soil soaked up most of the rainfall", "The Lake District is a steep upland landscape", "Roads and buildings mean more impermeable surfaces"], "ken-14": ["Long lag time", "Very low peak discharge", "No change to peak discharge"], "ken-15": ["Saturated ground", "Relief (steep slopes)", "Geology (impermeable rock)"], "ken-16": ["Slate is impermeable, so water can’t infiltrate", "More interception, which reduces runoff", "A longer lag time"], "ken-17": ["Fewer people and property are at risk", "It increases the capacity of the river channel", "It limits building in high risk areas"], "ken-20": ["£500 million+ damage", "Farmland damaged (saturated)", "About 4 million displaced"], "ken-22": ["Evacuations", "Water pollution (sewage and debris)", "$5 to 6 billion damage"], "ken-23": ["Businesses and factories closed", "Evacuations", "Coastal ecosystems damaged"], "ken-24": ["Flood walls", "Afforestation upstream", "International aid (UN, NGOs, governments)"], "ken-25": ["Afforestation upstream", "Land-use planning", "Sandbags"], "ken-26": ["Flood walls", "Embankments", "Temporary shelters"], "ken-28": ["Mainly caused by human mismanagement", "Largely preventable", "Human activity played no part in the flooding"], "abe-07": ["2,000+ homes flooded", "Collapse of a mine shaft"], "abe-08": ["Poor site choice", "Lack of management", "Ignored warnings"], "abe-09": ["Underground springs were present", "The tip was on a hillside above the village", "No monitoring of the tip’s stability"], "abe-10": ["Underground springs were present", "Prolonged rain saturated the spoil tip", "The tip was built on flat land below the village"], "abe-11": ["The tip was on a hillside above the village", "Gravity increased movement", "Water drained quickly out of the tip"], "abe-12": ["Heavy rainfall", "Steep valley slopes", "Water build up"], "abe-13": ["Prolonged rain saturated the spoil tip", "No monitoring of the tip’s stability", "Previous small slides had been reported"], "abe-14": ["The spoil tip was built above the school and village", "Underground springs were present inside the tip", "Payments were made to families"], "abe-15": ["No monitoring of the tip’s stability", "No earlier slides had ever happened", "The spoil tip was built above the school and village"], "abe-17": ["Cost of damage and compensation", "Debris", "2,000+ homes flooded"], "abe-18": ["Community trauma", "Village covered in mud", "Fishing and farming livelihoods destroyed"], "abe-19": ["Community trauma", "Long-term decline in the area", "Coastal ecosystems damaged"], "abe-20": ["Stricter regulations on spoil tips", "Compensation payments to families", "Better inspection of mining waste"], "abe-21": ["Rescue efforts", "Temporary shelters", "International aid"], "abe-22": ["Legal changes: no-build coastal zones", "Monitoring: improved typhoon warning systems", "Compensation: ‘Build back better’ homes"], "abe-23": ["Mainly caused by extreme physical factors", "Human error acted only as a trigger", "Impossible to predict or prevent"], "hai-05": ["Coastal population (close to the sea)", "Limited preparedness"], "hai-07": ["It causes the storm to spin", "It pushes seawater onto the land", "The storm weakens"], "hai-08": ["Sinking air creates high pressure", "Causes the storm to spin and organise", "Cold ocean water removes the storm’s energy"], "hai-09": ["The pull of the Moon’s gravity", "Provides energy so the storm intensifies", "Rising air creates very low pressure"], "hai-11": ["Flooding inland", "Warmer ocean water", "Saturated ground"], "hai-13": ["An inland flood: rainwater running off the hills", "A river flood: the channel overflowing its banks", "Causes the storm to spin and organise"], "hai-14": ["A coastal storm surge", "Very low air pressure", "Stronger winds"], "hai-15": ["Storm surge", "Warm ocean water", "Low pressure system"], "hai-16": ["Strong housing built to resist storms", "Warm ocean water gave the storm energy", "More money was available for storm shelters"], "hai-20": ["About 63,000 deaths", "About 400,000 displaced", "About 40 million affected"], "hai-22": ["£500 million+ damage", "Coastal ecosystems damaged", "About 4 million displaced"], "hai-23": ["Fishing and farming livelihoods destroyed", "About 4 million displaced", "$5 to 6 billion damage"], "hai-24": ["‘Build back better’ homes", "No-build coastal zones", "More storm shelters"], "hai-25": ["Weak housing in informal settlements", "Fishing and farming livelihoods destroyed", "No-build coastal zones"], "hai-26": ["Rescue", "Medical support"], "hai-27": ["Protection: food, water and medical support", "Technology: search and rescue"], "hai-28": ["Aid arrived immediately, with no delays", "The country is no longer vulnerable to typhoons", "Mainly caused by human mismanagement"], "tee-04": ["Only rural areas, with no industry", "For example Kendal", "For example Aberfan"], "tee-05": ["Fire risk", "Risk of disease", "Tropical storm risk"], "tee-06": ["Meanders and lateral erosion", "Low rainfall reduces river discharge", "Only rural areas near the source are at risk"], "tee-07": ["Freeze-thaw weathering of the valley sides", "Only in the upper course near the source", "Wave erosion along the coast"], "tee-09": ["Afforestation", "Flood zoning", "River restoration"], "tee-11": ["Raised river banks along the channel", "Removes meanders from the river", "Planting trees to intercept rainfall"], "tee-12": ["Allows the river to go back to its natural course", "A barrier built across the river", "Slows the water so it stays in the channel longer"], "tee-13": ["A barrier built across the river", "Remove meanders from the channel", "Limit building in high risk areas"], "tee-14": ["Tees Barrage", "Channel straightening", "Embankments"], "tee-15": ["Limits building in high risk areas", "Raised river banks", "More impermeable surfaces, which increases runoff"], "tee-16": ["Planting trees to increase interception", "Raises the river banks", "Allows more building on the floodplain"], "tee-17": ["Removes meanders to make the channel straight", "A barrier built across the river", "Limits building in high risk areas"], "tee-20": ["Expensive", "Can cause more flooding downstream", "Environmental damage"], "tee-21": ["Reduced flood risk", "Protects settlements and industry", "Economic benefits"], "tee-22": ["Fails to reduce the flood risk", "Cheap to build and maintain", "Works with natural processes"], "oth-06": ["Eddies and swirling water", "Found in the upper course", "Caused by friction"], "oth-03": ["In smooth channels", "Evaporation", "The Coriolis effect"], "oth-04": ["Air is forced to rise over mountains", "A warm air mass meets a cold air mass", "Cold air sinks towards the ground"], "oth-05": ["Human rights issues", "Strong community network", "Provides cheap labour"], "oth-08": ["Community trauma", "Fire risk", "A point ending in the word infrastructure"], "oth-07": ["Laminar flow: water moving in parallel layers", "Turbulent flow: eddies and swirling water", "Lag time: the gap between peak rainfall and peak discharge"]};
+Q.forEach(function(q){
+  var x=X[q.id];
+  if(q.type!=="rc"||!x||!x.length)return;
+  if(q.p.length===1){q.type="mc";q.a=q.p[0];q.d=x;}
+  else{q.type="ms";q.x=x;}
+});
 TOPICS.forEach(function(t){topicById[t.id]=t;});
 var WEAK_SIZE=20, WEAK_MIN=5;
 
@@ -346,7 +360,8 @@ function nextQ(){
   if(sess.i>=sess.ids.length){finish();return;}
   var q=byId[sess.ids[sess.i]];
   cur={q:q,pos:sess.i,done:false,
-       opts:q.type==="mc"?shuffle([q.a].concat(q.d)):null,picked:null,
+       opts:q.type==="mc"?shuffle([q.a].concat(q.d)):(q.type==="ms"?shuffle(q.p.concat(q.x)):null),picked:null,
+       sel:q.type==="ms"?q.p.concat(q.x).map(function(){return false;}):null,
        shown:false,ticks:q.type==="rc"?q.p.map(function(){return false;}):null};
   view="quiz";render();window.scrollTo(0,0);
 }
@@ -421,6 +436,29 @@ function renderQuiz(){
     if(cur.picked!==null){
       var ok=cur.opts[cur.picked]===q.a;
       h+='<p class="verdict '+(ok?'ok':'no')+'">'+(ok?'Correct.':'Not this time. The answer is '+esc(q.a)+'.')+'</p>';
+      if(q.note)h+='<p class="note">'+esc(q.note)+'</p>';
+      h+='<button class="btn" data-act="next" data-focus>'+(pos+1>=n?'Finish':'Next')+'</button>';
+    }
+  }else if(q.type==="ms"){
+    var nSel=cur.sel.filter(Boolean).length;
+    h+='<p class="hint">Select all that apply.</p><div class="opts">';
+    cur.opts.forEach(function(o,i){
+      var isC=q.p.indexOf(o)>-1,on=cur.sel[i],cls="opt",mark="",tag="";
+      if(!cur.done){if(on){cls+=" sel";mark="\u2713";}}
+      else if(isC&&on){cls+=" right";mark="\u2713";}
+      else if(isC){cls+=" miss";mark="\u2713";tag='<em class="tagm">You missed this</em>';}
+      else if(on){cls+=" wrong";mark="\u2715";tag='<em class="tagm">Does not apply</em>';}
+      else cls+=" dim";
+      h+='<button class="'+cls+'" data-act="msel" data-i="'+i+'" aria-pressed="'+!!on+'"'+(cur.done?' disabled':'')+'><b>'+mark+'</b><span>'+esc(o)+tag+'</span></button>';
+    });
+    h+='</div>';
+    if(!cur.done){
+      h+='<button class="btn" data-act="check"'+(nSel?'':' disabled')+'>Check</button>';
+    }else{
+      var hit=0,bad=0;
+      cur.opts.forEach(function(o,i){if(cur.sel[i]){if(q.p.indexOf(o)>-1)hit++;else bad++;}});
+      var all=hit===q.p.length&&!bad;
+      h+='<p class="verdict '+(all?'ok':'no')+'">'+(all?'All correct.':'You got '+hit+' of '+q.p.length+(bad?', and picked '+bad+' that '+(bad===1?'does':'do')+' not apply':'')+'.')+'</p>';
       if(q.note)h+='<p class="note">'+esc(q.note)+'</p>';
       h+='<button class="btn" data-act="next" data-focus>'+(pos+1>=n?'Finish':'Next')+'</button>';
     }
@@ -499,6 +537,13 @@ function act(a,el){
     case "pick":
       if(cur.picked!==null)break;
       cur.picked=i;record(cur.opts[i]===cur.q.a?1:0);render();break;
+    case "msel":if(cur.done)break;cur.sel[i]=!cur.sel[i];render();break;
+    case "check":
+      if(cur.done)break;
+      var hit=0,bad=0;
+      cur.opts.forEach(function(o,k){if(cur.sel[k]){if(cur.q.p.indexOf(o)>-1)hit++;else bad++;}});
+      if(!hit&&!bad)break;
+      record(Math.max(0,(hit-bad)/cur.q.p.length));render();break;
     case "show":cur.shown=true;render();break;
     case "got":record(1);nextQ();break;
     case "missed":record(0);nextQ();break;
@@ -529,6 +574,8 @@ document.addEventListener("keydown",function(e){
   if(cur.q.type==="mc"&&cur.picked===null){
     var idx=l>-1?l:n;
     if(idx>-1&&idx<cur.opts.length){e.preventDefault();act("pick",app.querySelectorAll('[data-act="pick"]')[idx]);}
+  }else if(cur.q.type==="ms"&&!cur.done&&n>-1&&n<cur.opts.length){
+    e.preventDefault();act("msel",app.querySelectorAll('[data-act="msel"]')[n]);
   }else if(cur.q.type==="rc"&&cur.shown&&cur.q.p.length>1&&n>-1&&n<cur.q.p.length){
     e.preventDefault();act("tick",app.querySelectorAll('[data-act="tick"]')[n]);
   }
